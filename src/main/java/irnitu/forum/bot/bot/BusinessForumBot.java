@@ -1,6 +1,6 @@
 package irnitu.forum.bot.bot;
 
-import irnitu.forum.bot.buttons.Buttons;
+import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.configuration.BotConfig;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.handlers.ButtonHandler;
@@ -20,11 +20,14 @@ public class BusinessForumBot extends TelegramLongPollingBot {
 
     private final BotConfig botConfig;
     private final ButtonHandler buttonHandler;
+    private final Keyboards keyboards;
 
     public BusinessForumBot(BotConfig botConfig,
-                            ButtonHandler buttonHandler) {
+                            ButtonHandler buttonHandler,
+                            Keyboards keyboards) {
         this.botConfig = botConfig;
         this.buttonHandler = buttonHandler;
+        this.keyboards = keyboards;
     }
 
     @Override
@@ -40,10 +43,6 @@ public class BusinessForumBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         log.info("OnUpdateReceived invoked");
-//        if (!update.hasMessage() || !update.getMessage().hasText()) {
-//            log.info("Empty update received");
-//            return;
-//        }
 
         if (update.hasCallbackQuery()){
             log.info("Update has callback query");
@@ -57,12 +56,8 @@ public class BusinessForumBot extends TelegramLongPollingBot {
                 case UserCommands.START:
                     startCommand(update);
                     break;
-                case UserCommands.SCHEDULE:
-                    scheduleCommand(update);
-                    break;
                 default:
                     log.error("Unexpected user command!");
-
             }
         }
     }
@@ -71,28 +66,20 @@ public class BusinessForumBot extends TelegramLongPollingBot {
         SendMessage sendMessage = new SendMessage();
         long chatId = update.getMessage().getChatId();
         sendMessage.setText("Добро пожаловать в бот форума предпринимателей!");
-        sendMessage.setReplyMarkup(Buttons.mainKeyboard());
+        sendMessage.setReplyMarkup(keyboards.mainKeyboard());
         sendMessage.setChatId(String.valueOf(chatId));
         sendToUser(sendMessage);
     }
 
-//    private void helloCommand(Update update) {
-//        SendMessage sendMessage = new SendMessage();
-//        String replyMessage = "Добро пожаловать в бота! " + update.getMessage().getFrom().getUserName();
-//        long chatId = update.getMessage().getChatId();
-//        sendMessage.setChatId(String.valueOf(chatId));
-//        sendMessage.setText(replyMessage);
-//        sendToUser(sendMessage);
-//    }
-
-    private void scheduleCommand(Update update) {
-
-    }
 
     private void sendToUser(SendMessage sendMessage){
         try{
-            execute(sendMessage);
-            log.info("StartCommand reply sent");
+            if (sendMessage != null) {
+                execute(sendMessage);
+                log.info("StartCommand reply sent");
+            }else{
+                log.info("Send message == null");
+            }
         }catch(TelegramApiException e){
             System.err.println("Occurred exception: " + e);
             e.printStackTrace();

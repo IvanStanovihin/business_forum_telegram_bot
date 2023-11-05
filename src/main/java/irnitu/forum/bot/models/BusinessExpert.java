@@ -14,7 +14,7 @@ public class BusinessExpert {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String initials;
+    private String name;
     private String description;
     @ManyToOne
     @JoinColumn(name = "education_block_id")
