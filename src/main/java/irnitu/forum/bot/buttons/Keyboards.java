@@ -2,8 +2,12 @@ package irnitu.forum.bot.buttons;
 
 import irnitu.forum.bot.constants.Buttons;
 import irnitu.forum.bot.constants.UserCommands;
+import irnitu.forum.bot.models.ConsultationTimeSlot;
 import irnitu.forum.bot.repositories.BusinessExpertRepository;
+import irnitu.forum.bot.repositories.ConsultationTimeSlotRepository;
 import irnitu.forum.bot.services.BusinessExpertService;
+import irnitu.forum.bot.services.ConsultationTimeSlotService;
+import irnitu.forum.bot.utils.TimeUtil;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -16,9 +20,19 @@ import java.util.stream.Collectors;
 public class Keyboards {
 
     private final BusinessExpertService businessExpertService;
+    private final ConsultationTimeSlotService consultationTimeSlotService;
 
-    public Keyboards(BusinessExpertService businessExpertService) {
+    public Keyboards(BusinessExpertService businessExpertService,
+                     ConsultationTimeSlotService consultationTimeSlotService) {
         this.businessExpertService = businessExpertService;
+        this.consultationTimeSlotService = consultationTimeSlotService;
+    }
+
+    private InlineKeyboardButton createButton(String callback, String text){
+        InlineKeyboardButton button = new InlineKeyboardButton();
+        button.setCallbackData(callback);
+        button.setText(text);
+        return button;
     }
 
     public InlineKeyboardMarkup mainKeyboard() {
@@ -37,11 +51,15 @@ public class Keyboards {
         return markupInline;
     }
 
+    /**
+     * Клавиатура со списком экспертов доступных для записи на консультацию
+     * @return клавиатуру, которая состоит из списка экспертов
+     */
     public InlineKeyboardMarkup expertsKeyboard(){
         List<InlineKeyboardButton> expertButtons = new ArrayList<>();
         expertButtons = businessExpertService.getExpertNames()
                 .stream()
-                .map(expertName -> createButton("/" + expertName, expertName))
+                .map(expertName -> createButton((UserCommands.EXPERT + "_" + expertName), expertName))
                 .collect(Collectors.toList());
 
         List<List<InlineKeyboardButton>> rowsInLine = expertButtons
@@ -54,10 +72,22 @@ public class Keyboards {
         return markupInline;
     }
 
-    private InlineKeyboardButton createButton(String callback, String text){
-        InlineKeyboardButton button = new InlineKeyboardButton();
-        button.setCallbackData(callback);
-        button.setText(text);
-        return button;
+    /**
+     * Клавиатура со свободными тайм слотами на консультацию, для эксперта
+     * @param expertName имя эксперта для которого выполняется поиск свободных тайм слотов
+     * @return список свободных тайм слотов для эксперта
+     */
+    public InlineKeyboardMarkup expertFreeTimeSlotKeyboard(String expertName) {
+        List<ConsultationTimeSlot> expertFreeTimeSlot = consultationTimeSlotService.getFreeSlot(expertName);
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        for (ConsultationTimeSlot timeSlot : expertFreeTimeSlot){
+            String buttonText = TimeUtil.getTimeInterval(timeSlot.getStartConsultationTime(), timeSlot.getEndConsultationTime());
+            String buttonCallback = UserCommands.TIME_SLOT + "_" + timeSlot.getStartConsultationTime() + "_" + timeSlot.getEndConsultationTime();
+            InlineKeyboardButton freeSlotButton = createButton(buttonCallback, buttonText);
+            rowsInLine.add(List.of(freeSlotButton));
+        }
+        InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
+        markupInLine.setKeyboard(rowsInLine);
+        return markupInLine;
     }
 }

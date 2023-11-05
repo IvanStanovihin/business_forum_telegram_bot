@@ -7,4 +7,5 @@ public class Buttons {
     public static final InlineKeyboardButton HELLO_BUTTON = new InlineKeyboardButton("Приветствие");
     public static final InlineKeyboardButton HELP_BUTTON = new InlineKeyboardButton("Помощь");
     public static final InlineKeyboardButton SCHEDULE_BUTTON = new InlineKeyboardButton("Расписание");
+
 }

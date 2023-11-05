@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BusinessExpertRepository extends JpaRepository<BusinessExpert, Long> {
+
+    BusinessExpert findByName(String name);
 }

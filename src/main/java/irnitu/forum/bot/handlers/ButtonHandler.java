@@ -21,13 +21,17 @@ public class ButtonHandler {
     public SendMessage handleButton(Update update){
         log.info("HandleButton ");
         String message = update.getCallbackQuery().getData();
-        switch (message){
+        String messageCallback = message.split("_")[0];
+        log.info("HandleButton message callBack {}", messageCallback);
+        switch (messageCallback){
             case UserCommands.HELLO:
                 return helloCommand(update);
             case UserCommands.HELP:
                 return helpCommand(update);
             case UserCommands.SCHEDULE:
                 return scheduleCommand(update);
+            case UserCommands.EXPERT:
+                return businessExpertCommand(update);
             default:
                 log.error("Unexpected button pressed!");
                 return null;
@@ -64,6 +68,19 @@ public class ButtonHandler {
         sendMessage.setText("Выберите эксперта, к которому хотите записаться на консультацию");
         sendMessage.setReplyMarkup(businessExpertKeyboard);
         sendMessage.setChatId(String.valueOf(chatId));
+        return sendMessage;
+    }
+
+    private SendMessage businessExpertCommand(Update update){
+        log.info("HandleButton businessExpertCommand");
+        long chatId = update.getCallbackQuery().getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        String expertName = update.getCallbackQuery().getData().split("_")[1];
+        log.info("HandleButton \ngetData {}", expertName);
+        InlineKeyboardMarkup expertFreeTimeSlotKeyboard = keyboards.expertFreeTimeSlotKeyboard(expertName);
+        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setText("Выберите время для записи к эксперту:");
+        sendMessage.setReplyMarkup(expertFreeTimeSlotKeyboard);
         return sendMessage;
     }
 }
