@@ -4,7 +4,10 @@ import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.configuration.BotConfig;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.handlers.ButtonHandler;
+import irnitu.forum.bot.handlers.CommandHandler;
 import irnitu.forum.bot.menu.BotMenu;
+import irnitu.forum.bot.services.UserService;
+import irnitu.forum.bot.states.BotStates;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -27,22 +30,28 @@ public class BusinessForumBot extends TelegramLongPollingBot {
     private final BotConfig botConfig;
     private final ButtonHandler buttonHandler;
     private final Keyboards keyboards;
+    private final UserService userService;
+    private final CommandHandler commandHandler;
 
     public BusinessForumBot(BotConfig botConfig,
                             ButtonHandler buttonHandler,
-                            Keyboards keyboards) {
+                            Keyboards keyboards,
+                            UserService userService,
+                            CommandHandler commandHandler) {
         this.botConfig = botConfig;
         this.buttonHandler = buttonHandler;
         this.keyboards = keyboards;
+        this.userService = userService;
+        this.commandHandler = commandHandler;
         initMenu();
     }
 
-    private void initMenu(){
-        List<BotCommand> botCommands = BotMenu.getMenuCommands();
+    private void initMenu() {
+        SetMyCommands botMenu = BotMenu.getMenuCommands();
         try {
-            this.execute(new SetMyCommands(botCommands, new BotCommandScopeDefault(), null));
+            this.execute(botMenu);
         } catch (TelegramApiException e) {
-            log.error("Error setting bot's command list: " + e.getMessage());
+            log.error("Error setting bot's menu: " + e.getMessage());
         }
     }
 
@@ -60,21 +69,16 @@ public class BusinessForumBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         log.info("OnUpdateReceived invoked");
 
-        if (update.hasCallbackQuery()){
+        if (update.hasCallbackQuery()) {
+            //Обработка нажатий на кнопки
             log.info("Update has callback query");
             SendMessage reply = buttonHandler.handleButton(update);
             sendToUser(reply);
         } else {
-
+            //Обработка команд меню и ввода текста
             log.info("Update is simple message");
-            String message = update.getMessage().getText();
-            switch (message) {
-                case UserCommands.START:
-                    startCommand(update);
-                    break;
-                default:
-                    log.error("Unexpected user command!");
-            }
+            SendMessage sendMessage = commandHandler.handleCommand(update);
+            sendToUser(sendMessage);
         }
     }
 
@@ -88,21 +92,19 @@ public class BusinessForumBot extends TelegramLongPollingBot {
     }
 
 
-    private void sendToUser(SendMessage sendMessage){
-        try{
+    private void sendToUser(SendMessage sendMessage) {
+        try {
             if (sendMessage != null) {
                 execute(sendMessage);
                 log.info("StartCommand reply sent");
-            }else{
+            } else {
                 log.info("Send message == null");
             }
-        }catch(TelegramApiException e){
+        } catch (TelegramApiException e) {
             System.err.println("Occurred exception: " + e);
             e.printStackTrace();
         }
     }
-
-
 
 
 }

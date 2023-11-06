@@ -1,19 +1,24 @@
 package irnitu.forum.bot.menu;
 
+import irnitu.forum.bot.constants.UserCommands;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BotMenu {
 
-    public static List<BotCommand> getMenuCommands(){
+    public static SetMyCommands getMenuCommands(){
         List<BotCommand> botCommands = new ArrayList<>();
-        botCommands.add(new BotCommand("/start", "get a welcome message"));
-        botCommands.add(new BotCommand("/mydata", "get your data stored"));
-        botCommands.add(new BotCommand("/deletedata", "delete my data"));
-        botCommands.add(new BotCommand("/help", "info how to use this bot"));
-        botCommands.add(new BotCommand("/settings", "set your preferences"));
-        return botCommands;
+        botCommands.add(new BotCommand(UserCommands.HELLO, "Поздороваться"));
+        botCommands.add(new BotCommand(UserCommands.HELP, "Помощь по функциям бота"));
+        botCommands.add(new BotCommand(UserCommands.SCHEDULE, "Расписание консультаций"));
+        botCommands.add(new BotCommand(UserCommands.FEEDBACK, "Оставить отзыв"));
+        botCommands.add(new BotCommand(UserCommands.USER_CONSULTATIONS, "Посмотреть моё расписание консультаций"));
+        botCommands.add(new BotCommand(UserCommands.REGISTRATION, "Зарегистрироваться"));
+        return new SetMyCommands(botCommands, new BotCommandScopeDefault(), null);
     }
 }
