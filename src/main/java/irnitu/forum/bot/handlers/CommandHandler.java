@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @Slf4j
 @Service
@@ -65,14 +66,6 @@ public class CommandHandler {
         return null;
     }
 
-    private SendMessage scheduleCommand(Update update) {
-        // Проверка регистрации пользователя
-        if (!userService.isRegistered(update)) {
-            return userService.registrationError(update);
-        }
-        return null;
-    }
-
     private SendMessage helpCommand(Update update) {
         // Проверка регистрации пользователя
         if (!userService.isRegistered(update)) {
@@ -98,6 +91,31 @@ public class CommandHandler {
         return sendMessage;
     }
 
+    /**
+     * Метод, который отправляет пользователю список кнопок для выбора эксперта на консультацию
+     * @param update
+     * @return
+     */
+    private SendMessage scheduleCommand(Update update){
+        log.info("HandleButton scheduleCommand");
+        // Проверка регистрации пользователя
+        if (!userService.isRegistered(update)) {
+            return userService.registrationError(update);
+        }
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        InlineKeyboardMarkup businessExpertKeyboard = keyboards.expertsKeyboard();
+        sendMessage.setText("Выберите эксперта, к которому хотите записаться на консультацию");
+        sendMessage.setReplyMarkup(businessExpertKeyboard);
+        sendMessage.setChatId(String.valueOf(chatId));
+        return sendMessage;
+    }
+
+    /**
+     * Метод в котором происходит регистрация пользователя.
+     * @param update
+     * @return
+     */
     private SendMessage checkState(Update update){
         long chatId = update.getMessage().getChatId();
         if (BotStates.WAIT_REGISTRATION){

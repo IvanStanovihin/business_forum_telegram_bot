@@ -82,7 +82,11 @@ public class Keyboards {
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         for (ConsultationTimeSlot timeSlot : expertFreeTimeSlot){
             String buttonText = TimeUtil.getTimeInterval(timeSlot.getStartConsultationTime(), timeSlot.getEndConsultationTime());
-            String buttonCallback = UserCommands.TIME_SLOT + "_" + timeSlot.getStartConsultationTime() + "_" + timeSlot.getEndConsultationTime();
+            String buttonCallback = UserCommands.TIME_SLOT
+                    + "_" + timeSlot.getId()
+                    + "_" + timeSlot.getExpert().getId()
+                    + "_" + timeSlot.getStartConsultationTime()
+                    + "_" + timeSlot.getEndConsultationTime();
             InlineKeyboardButton freeSlotButton = createButton(buttonCallback, buttonText);
             rowsInLine.add(List.of(freeSlotButton));
         }

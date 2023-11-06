@@ -14,4 +14,6 @@ public interface ConsultationTimeSlotRepository extends JpaRepository<Consultati
             "student_id IS NULL",
             nativeQuery = true)
     List<ConsultationTimeSlot> findByExpertWithNullStudent(Long expertId);
+
+    ConsultationTimeSlot findByStudentIdAndExpertId(Long userId, Long expertId);
 }
