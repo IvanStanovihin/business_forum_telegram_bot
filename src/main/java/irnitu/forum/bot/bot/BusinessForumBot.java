@@ -4,12 +4,18 @@ import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.configuration.BotConfig;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.handlers.ButtonHandler;
+import irnitu.forum.bot.menu.BotMenu;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.List;
 
 /**
  * Главный класс обработчик команд из телеграмма
@@ -28,6 +34,16 @@ public class BusinessForumBot extends TelegramLongPollingBot {
         this.botConfig = botConfig;
         this.buttonHandler = buttonHandler;
         this.keyboards = keyboards;
+        initMenu();
+    }
+
+    private void initMenu(){
+        List<BotCommand> botCommands = BotMenu.getMenuCommands();
+        try {
+            this.execute(new SetMyCommands(botCommands, new BotCommandScopeDefault(), null));
+        } catch (TelegramApiException e) {
+            log.error("Error setting bot's command list: " + e.getMessage());
+        }
     }
 
     @Override
