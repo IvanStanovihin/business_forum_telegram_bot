@@ -1,4 +1,4 @@
-package irnitu.forum.bot.models;
+package irnitu.forum.bot.models.entities;
 
 import lombok.Data;
 

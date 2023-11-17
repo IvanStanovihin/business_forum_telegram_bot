@@ -1,6 +1,6 @@
 package irnitu.forum.bot.services;
 
-import irnitu.forum.bot.models.BusinessExpert;
+import irnitu.forum.bot.models.entities.BusinessExpert;
 import irnitu.forum.bot.repositories.BusinessExpertRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package irnitu.forum.bot.services;
 
-import irnitu.forum.bot.models.User;
+import irnitu.forum.bot.models.entities.User;
 import irnitu.forum.bot.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

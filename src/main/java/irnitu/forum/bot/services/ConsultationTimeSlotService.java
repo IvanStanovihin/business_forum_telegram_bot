@@ -1,8 +1,8 @@
 package irnitu.forum.bot.services;
 
-import irnitu.forum.bot.models.BusinessExpert;
-import irnitu.forum.bot.models.ConsultationTimeSlot;
-import irnitu.forum.bot.models.User;
+import irnitu.forum.bot.models.entities.BusinessExpert;
+import irnitu.forum.bot.models.entities.ConsultationTimeSlot;
+import irnitu.forum.bot.models.entities.User;
 import irnitu.forum.bot.repositories.BusinessExpertRepository;
 import irnitu.forum.bot.repositories.ConsultationTimeSlotRepository;
 import irnitu.forum.bot.repositories.UserRepository;

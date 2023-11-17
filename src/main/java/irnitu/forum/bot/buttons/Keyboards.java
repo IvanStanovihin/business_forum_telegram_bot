@@ -2,13 +2,15 @@ package irnitu.forum.bot.buttons;
 
 import irnitu.forum.bot.constants.Buttons;
 import irnitu.forum.bot.constants.UserCommands;
-import irnitu.forum.bot.models.ConsultationTimeSlot;
-import irnitu.forum.bot.repositories.BusinessExpertRepository;
-import irnitu.forum.bot.repositories.ConsultationTimeSlotRepository;
+import irnitu.forum.bot.models.entities.ConsultationTimeSlot;
+import irnitu.forum.bot.models.entities.EducationBlock;
+import irnitu.forum.bot.repositories.EducationBlockRepository;
 import irnitu.forum.bot.services.BusinessExpertService;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
 import irnitu.forum.bot.utils.TimeUtil;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -21,11 +23,14 @@ public class Keyboards {
 
     private final BusinessExpertService businessExpertService;
     private final ConsultationTimeSlotService consultationTimeSlotService;
+    private final EducationBlockRepository educationBlockRepository;
 
     public Keyboards(BusinessExpertService businessExpertService,
-                     ConsultationTimeSlotService consultationTimeSlotService) {
+                     ConsultationTimeSlotService consultationTimeSlotService,
+                     EducationBlockRepository educationBlockRepository) {
         this.businessExpertService = businessExpertService;
         this.consultationTimeSlotService = consultationTimeSlotService;
+        this.educationBlockRepository = educationBlockRepository;
     }
 
     private InlineKeyboardButton createButton(String callback, String text){
@@ -93,5 +98,21 @@ public class Keyboards {
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
         markupInLine.setKeyboard(rowsInLine);
         return markupInLine;
+    }
+
+    public InlineKeyboardMarkup educationSectionsKeyboard(Update update) {
+        List<EducationBlock> educationBlocks = educationBlockRepository.findAll();
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        for (EducationBlock educationBlock : educationBlocks){
+            String buttonText = educationBlock.getName();
+            String buttonCallback = UserCommands.EDUCATION_BLOCK
+                    + "_"
+                    + educationBlock.getId();
+            InlineKeyboardButton educationBlockButton = createButton(buttonCallback, buttonText);
+            rowsInLine.add(List.of(educationBlockButton));
+        }
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        markup.setKeyboard(rowsInLine);
+        return markup;
     }
 }

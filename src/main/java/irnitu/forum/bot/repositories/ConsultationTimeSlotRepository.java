@@ -1,6 +1,6 @@
 package irnitu.forum.bot.repositories;
 
-import irnitu.forum.bot.models.ConsultationTimeSlot;
+import irnitu.forum.bot.models.entities.ConsultationTimeSlot;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

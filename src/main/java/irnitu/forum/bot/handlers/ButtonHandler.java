@@ -2,7 +2,7 @@ package irnitu.forum.bot.handlers;
 
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
-import irnitu.forum.bot.models.ConsultationTimeSlot;
+import irnitu.forum.bot.services.BotStatesService;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,17 +19,20 @@ public class ButtonHandler {
 
     private final Keyboards keyboards;
     private final ConsultationTimeSlotService consultationTimeSlotService;
+    private final BotStatesService botStatesService;
 
     public ButtonHandler(Keyboards keyboards,
-                         ConsultationTimeSlotService consultationTimeSlotService) {
+                         ConsultationTimeSlotService consultationTimeSlotService,
+                         BotStatesService botStatesService) {
         this.keyboards = keyboards;
         this.consultationTimeSlotService = consultationTimeSlotService;
+        this.botStatesService = botStatesService;
     }
 
     public SendMessage handleButton(Update update){
         log.info("HandleButton ");
-        String message = update.getCallbackQuery().getData();
-        String messageCallback = message.split("_")[0];
+        String messageCallback = update.getCallbackQuery().getData().split("_")[0];
+        botStatesService.resetState(update.getCallbackQuery().getFrom().getUserName());
         log.info("HandleButton message callBack {}", messageCallback);
         switch (messageCallback){
             case UserCommands.HELLO:

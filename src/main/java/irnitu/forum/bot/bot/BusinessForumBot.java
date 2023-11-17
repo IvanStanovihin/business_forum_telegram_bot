@@ -2,23 +2,18 @@ package irnitu.forum.bot.bot;
 
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.configuration.BotConfig;
-import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.handlers.ButtonHandler;
 import irnitu.forum.bot.handlers.CommandHandler;
+import irnitu.forum.bot.handlers.TextHandler;
 import irnitu.forum.bot.menu.BotMenu;
 import irnitu.forum.bot.services.UserService;
-import irnitu.forum.bot.states.BotStates;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
-import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.util.List;
 
 /**
  * Главный класс обработчик команд из телеграмма
@@ -32,17 +27,20 @@ public class BusinessForumBot extends TelegramLongPollingBot {
     private final Keyboards keyboards;
     private final UserService userService;
     private final CommandHandler commandHandler;
+    private final TextHandler textHandler;
 
     public BusinessForumBot(BotConfig botConfig,
                             ButtonHandler buttonHandler,
                             Keyboards keyboards,
                             UserService userService,
-                            CommandHandler commandHandler) {
+                            CommandHandler commandHandler,
+                            TextHandler textHandler) {
         this.botConfig = botConfig;
         this.buttonHandler = buttonHandler;
         this.keyboards = keyboards;
         this.userService = userService;
         this.commandHandler = commandHandler;
+        this.textHandler = textHandler;
         initMenu();
     }
 
@@ -74,10 +72,15 @@ public class BusinessForumBot extends TelegramLongPollingBot {
             log.info("Update has callback query");
             SendMessage reply = buttonHandler.handleButton(update);
             sendToUser(reply);
-        } else {
-            //Обработка команд меню и ввода текста
-            log.info("Update is simple message");
+        } else if (update.getMessage().getText().charAt(0) == '/') {
+            //Обработка команд. Текст, который пришёл от пользователя и начинается с символа /
+            log.info("Update has command");
             SendMessage sendMessage = commandHandler.handleCommand(update);
+            sendToUser(sendMessage);
+        } else{
+            //Обработка простого текста, введённого пользователем
+            log.info("Update is simple text");
+            SendMessage sendMessage = textHandler.handleText(update);
             sendToUser(sendMessage);
         }
     }

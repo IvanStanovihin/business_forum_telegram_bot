@@ -1,6 +1,6 @@
 package irnitu.forum.bot.repositories;
 
-import irnitu.forum.bot.models.User;
+import irnitu.forum.bot.models.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
