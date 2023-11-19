@@ -4,6 +4,8 @@ import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.services.BotStatesService;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
+import irnitu.forum.bot.services.FeedbackService;
+import irnitu.forum.bot.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -20,13 +22,19 @@ public class ButtonHandler {
     private final Keyboards keyboards;
     private final ConsultationTimeSlotService consultationTimeSlotService;
     private final BotStatesService botStatesService;
+    private final UserService userService;
+    private final FeedbackService feedbackService;
 
     public ButtonHandler(Keyboards keyboards,
                          ConsultationTimeSlotService consultationTimeSlotService,
-                         BotStatesService botStatesService) {
+                         BotStatesService botStatesService,
+                         UserService userService,
+                         FeedbackService feedbackService) {
         this.keyboards = keyboards;
         this.consultationTimeSlotService = consultationTimeSlotService;
         this.botStatesService = botStatesService;
+        this.userService = userService;
+        this.feedbackService = feedbackService;
     }
 
     public SendMessage handleButton(Update update){
@@ -35,42 +43,55 @@ public class ButtonHandler {
         botStatesService.resetState(update.getCallbackQuery().getFrom().getUserName());
         log.info("HandleButton message callBack {}", messageCallback);
         switch (messageCallback){
-            case UserCommands.HELLO:
-                return helloCommand(update);
-            case UserCommands.HELP:
-                return helpCommand(update);
             case UserCommands.EXPERT:
-                return businessExpertCommand(update);
+                return listOfExpertButtons(update);
             case UserCommands.TIME_SLOT:
-                return takeExpertTimeslot(update);
+                return timeslotButton(update);
+            case UserCommands.FEEDBACK_EDUCATION_BLOCK:
+                return educationBlockButton(update);
             default:
                 log.error("Unexpected button pressed!");
                 return null;
         }
     }
+//
+//    private SendMessage helloCommand(Update update){
+//        log.info("HandleButton helloCommand");
+//        SendMessage sendMessage = new SendMessage();
+//        String replyMessage = "Привет! " + update.getCallbackQuery().getFrom().getUserName();
+//        long chatId = update.getCallbackQuery().getMessage().getChatId();
+//        sendMessage.setChatId(String.valueOf(chatId));
+//        sendMessage.setText(replyMessage);
+//        return sendMessage;
+//    }
+//
+//
+//    private SendMessage helpCommand(Update update){
+//        log.info("HandleButton helpCommand");
+//        SendMessage sendMessage = new SendMessage();
+//        String replyMessage = "Уважаемый " + update.getCallbackQuery().getFrom().getUserName()
+//                + "! Скоро вам помогут, ожидайте :) ";
+//        long chatId = update.getCallbackQuery().getMessage().getChatId();
+//        sendMessage.setChatId(String.valueOf(chatId));
+//        sendMessage.setText(replyMessage);
+//        return sendMessage;
+//    }
+//
 
-    private SendMessage helloCommand(Update update){
-        log.info("HandleButton helloCommand");
-        SendMessage sendMessage = new SendMessage();
-        String replyMessage = "Привет! " + update.getCallbackQuery().getFrom().getUserName();
+    /**
+     * Кнопка выбора блока форума, на которую пользователь хочет оставить отзыв.
+     */
+    private SendMessage educationBlockButton(Update update) {
+        String userTelegramName = update.getCallbackQuery().getFrom().getUserName();
+        String educationBlockId = update.getCallbackQuery().getData().split("_")[1];
+        botStatesService.setFeedbackState(userTelegramName, educationBlockId);
+        log.info("feedbackBlockCommand educationBlockId {}", educationBlockId);
         long chatId = update.getCallbackQuery().getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
-        sendMessage.setText(replyMessage);
+        sendMessage.setText("Введите ваш отзыв:");
         return sendMessage;
     }
-
-
-    private SendMessage helpCommand(Update update){
-        log.info("HandleButton helpCommand");
-        SendMessage sendMessage = new SendMessage();
-        String replyMessage = "Уважаемый " + update.getCallbackQuery().getFrom().getUserName()
-                + "! Скоро вам помогут, ожидайте :) ";
-        long chatId = update.getCallbackQuery().getMessage().getChatId();
-        sendMessage.setChatId(String.valueOf(chatId));
-        sendMessage.setText(replyMessage);
-        return sendMessage;
-    }
-
 
     /**
      * Метод который отправляет пользователю клавиатуру из тайм-слотов на консультацию,
@@ -78,7 +99,7 @@ public class ButtonHandler {
      * @param update
      * @return
      */
-    private SendMessage businessExpertCommand(Update update){
+    private SendMessage listOfExpertButtons(Update update){
         log.info("HandleButton businessExpertCommand");
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
@@ -96,7 +117,7 @@ public class ButtonHandler {
      * @param update
      * @return
      */
-    private SendMessage takeExpertTimeslot(Update update){
+    private SendMessage timeslotButton(Update update){
         log.info("HandleButton takeExpertTimeslot");
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         Long timeslotId = Long.parseLong(update.getCallbackQuery().getData().split("_")[1]);
@@ -106,7 +127,7 @@ public class ButtonHandler {
         if (consultationTimeSlotService.isUserAlreadyTakeTimeslot(telegramUsername, expertId)){
             //Проверка чтобы пользователь не записался к эксперту несколько раз
             SendMessage sendMessage = new SendMessage();
-            sendMessage.setText("Вы уже записаны на консультацию к данному эксперту. Нельзя" +
+            sendMessage.setText("Вы уже записаны на консультацию к данному эксперту. Нельзя " +
                     "записать к одному эксперту несколько раз");
             sendMessage.setChatId(String.valueOf(chatId));
             return sendMessage;

@@ -58,4 +58,8 @@ public class UserService {
         return sendMessage;
     }
 
+    public User getByUserTelegramName(String userTelegramName){
+        return userRepository.findByTelegramUserName(userTelegramName);
+    }
+
 }

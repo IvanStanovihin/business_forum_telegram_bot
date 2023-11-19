@@ -9,8 +9,6 @@ import irnitu.forum.bot.services.BusinessExpertService;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
 import irnitu.forum.bot.utils.TimeUtil;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -100,12 +98,15 @@ public class Keyboards {
         return markupInLine;
     }
 
-    public InlineKeyboardMarkup educationSectionsKeyboard(Update update) {
+    /**
+     * Метод для создания списка кнопок, который состоит из названий блоков форума
+     */
+    public InlineKeyboardMarkup educationSectionsKeyboard() {
         List<EducationBlock> educationBlocks = educationBlockRepository.findAll();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         for (EducationBlock educationBlock : educationBlocks){
             String buttonText = educationBlock.getName();
-            String buttonCallback = UserCommands.EDUCATION_BLOCK
+            String buttonCallback = UserCommands.FEEDBACK_EDUCATION_BLOCK
                     + "_"
                     + educationBlock.getId();
             InlineKeyboardButton educationBlockButton = createButton(buttonCallback, buttonText);

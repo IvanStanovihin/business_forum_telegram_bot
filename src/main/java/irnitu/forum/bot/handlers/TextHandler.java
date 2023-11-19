@@ -2,6 +2,7 @@ package irnitu.forum.bot.handlers;
 
 import irnitu.forum.bot.models.entities.BotState;
 import irnitu.forum.bot.services.BotStatesService;
+import irnitu.forum.bot.services.FeedbackService;
 import irnitu.forum.bot.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,11 +18,14 @@ public class TextHandler {
 
     private final BotStatesService botStatesService;
     private final UserService userService;
+    private final FeedbackService feedbackService;
 
     public TextHandler(BotStatesService botStatesService,
-                       UserService userService) {
+                       UserService userService,
+                       FeedbackService feedbackService) {
         this.botStatesService = botStatesService;
         this.userService = userService;
+        this.feedbackService = feedbackService;
     }
 
     public SendMessage handleText(Update update){
@@ -32,7 +36,7 @@ public class TextHandler {
             case WAIT_REGISTRATION:
                 return registrationText(update);
             case WAIT_FEEDBACK:
-                return feedbackText(update);
+                return feedbackText(update, botState);
             default:
                 log.error("Unrecognized user text {}", update.getMessage().getText());
         }
@@ -51,8 +55,19 @@ public class TextHandler {
         return sendMessage;
     }
 
-    private SendMessage feedbackText(Update update){
+    /**
+     * Обработка состояния бота, когда он ожидает от пользователя ввода отзыва.
+     */
+    private SendMessage feedbackText(Update update, BotState botState){
         log.info("HandleText handleFeedbackText");
-        return null;
+        String userTelegramName = update.getMessage().getFrom().getUserName();
+        String feedback = update.getMessage().getText();
+        Long educationBlockId = botState.getEducationBlockId();
+        feedbackService.addFeedback(userTelegramName, educationBlockId, feedback);
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setText("Спасибо за отзыв!");
+        return sendMessage;
     }
 }

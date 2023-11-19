@@ -40,6 +40,22 @@ public class BotStatesService {
     }
 
     /**
+     * Выставление стейта на ожидание ввода пользователем отзыва
+     */
+    public void setFeedbackState(String userTelegramName, String educationBlockId){
+        BotState botState = botStateRepository.findByUserTelegramName(userTelegramName);
+        if (botState == null) {
+            botState = new BotState()
+                    .setUserTelegramName(userTelegramName);
+        }
+        botState
+                .setEducationBlockId(Long.valueOf(educationBlockId))
+                .setState(BotStateNames.WAIT_FEEDBACK);
+        botStateRepository.save(botState);
+    }
+
+
+    /**
      * Очистка состояния бота для конкретного пользователя.
      */
     public void resetState(String telegramUsername){

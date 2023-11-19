@@ -16,7 +16,4 @@ public class BusinessExpert {
     private Long id;
     private String name;
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "education_block_id")
-    private EducationBlock educationBlock;
 }

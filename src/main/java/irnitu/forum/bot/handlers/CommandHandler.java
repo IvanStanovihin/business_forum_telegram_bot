@@ -49,6 +49,8 @@ public class CommandHandler {
         }
     }
 
+
+
     private SendMessage consultationsCommand(Update update) {
         // Проверка регистрации пользователя
         if (!userService.isRegistered(update)) {
@@ -66,7 +68,7 @@ public class CommandHandler {
         if (!userService.isRegistered(update)) {
             return userService.registrationError(update);
         }
-        InlineKeyboardMarkup educationBlocksMarkup =  keyboards.educationSectionsKeyboard(update);
+        InlineKeyboardMarkup educationBlocksMarkup =  keyboards.educationSectionsKeyboard();
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("Выберите блок форума на который хотите оставить отзыв:");
