@@ -85,15 +85,6 @@ public class BusinessForumBot extends TelegramLongPollingBot {
         }
     }
 
-    private void startCommand(Update update) {
-        SendMessage sendMessage = new SendMessage();
-        long chatId = update.getMessage().getChatId();
-        sendMessage.setText("Добро пожаловать в бот форума предпринимателей!");
-        sendMessage.setReplyMarkup(keyboards.mainKeyboard());
-        sendMessage.setChatId(String.valueOf(chatId));
-        sendToUser(sendMessage);
-    }
-
 
     private void sendToUser(SendMessage sendMessage) {
         try {
@@ -108,6 +99,4 @@ public class BusinessForumBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
-
 }

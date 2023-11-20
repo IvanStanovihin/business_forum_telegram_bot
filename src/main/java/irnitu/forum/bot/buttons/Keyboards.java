@@ -38,21 +38,20 @@ public class Keyboards {
         return button;
     }
 
-    public InlineKeyboardMarkup mainKeyboard() {
-        Buttons.HELLO_BUTTON.setCallbackData(UserCommands.HELLO);
-        Buttons.HELP_BUTTON.setCallbackData(UserCommands.HELP);
-        Buttons.SCHEDULE_BUTTON.setCallbackData(UserCommands.SCHEDULE);
-
-        List<InlineKeyboardButton> rowInline1 = List.of(Buttons.HELLO_BUTTON);
-        List<InlineKeyboardButton> rowInline2 = List.of(Buttons.HELP_BUTTON);
-        List<InlineKeyboardButton> rowInline3 = List.of(Buttons.SCHEDULE_BUTTON);
-        List<List<InlineKeyboardButton>> rowsInLine = List.of(rowInline1, rowInline2, rowInline3);
-
-        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-        markupInline.setKeyboard(rowsInLine);
-
-        return markupInline;
-    }
+//    public InlineKeyboardMarkup mainKeyboard() {
+//        Buttons.HELP_BUTTON.setCallbackData(UserCommands.HELP);
+//        Buttons.SCHEDULE_BUTTON.setCallbackData(UserCommands.SCHEDULE);
+//
+//        List<InlineKeyboardButton> rowInline1 = List.of(Buttons.HELLO_BUTTON);
+//        List<InlineKeyboardButton> rowInline2 = List.of(Buttons.HELP_BUTTON);
+//        List<InlineKeyboardButton> rowInline3 = List.of(Buttons.SCHEDULE_BUTTON);
+//        List<List<InlineKeyboardButton>> rowsInLine = List.of(rowInline1, rowInline2, rowInline3);
+//
+//        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+//        markupInline.setKeyboard(rowsInLine);
+//
+//        return markupInline;
+//    }
 
     /**
      * Клавиатура со списком экспертов доступных для записи на консультацию

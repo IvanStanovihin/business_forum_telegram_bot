@@ -2,6 +2,7 @@ package irnitu.forum.bot.handlers;
 
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
+import irnitu.forum.bot.services.ConsultationTimeSlotService;
 import irnitu.forum.bot.services.UserService;
 import irnitu.forum.bot.services.BotStatesService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +18,16 @@ public class CommandHandler {
     private final Keyboards keyboards;
     private final UserService userService;
     private final BotStatesService botStatesService;
+    private final ConsultationTimeSlotService consultationTimeSlotService;
 
     public CommandHandler(Keyboards keyboards,
                           UserService userService,
-                          BotStatesService botStatesService) {
+                          BotStatesService botStatesService,
+                          ConsultationTimeSlotService consultationTimeSlotService) {
         this.keyboards = keyboards;
         this.userService = userService;
         this.botStatesService = botStatesService;
+        this.consultationTimeSlotService = consultationTimeSlotService;
     }
 
     public SendMessage handleCommand(Update update) {
@@ -33,11 +37,9 @@ public class CommandHandler {
         switch (message) {
             case UserCommands.REGISTRATION:
                 return registrationCommand(update);
-            case UserCommands.HELLO:
-                return helloCommand(update);
             case UserCommands.HELP:
                 return helpCommand(update);
-            case UserCommands.SCHEDULE:
+            case UserCommands.ADD_CONSULTATION:
                 return scheduleCommand(update);
             case UserCommands.FEEDBACK:
                 return feedbackCommand(update);
@@ -50,13 +52,21 @@ public class CommandHandler {
     }
 
 
-
+    /**
+     * Метод для обработки кнопки "мои консультации".
+     */
     private SendMessage consultationsCommand(Update update) {
         // Проверка регистрации пользователя
         if (!userService.isRegistered(update)) {
             return userService.registrationError(update);
         }
-        return null;
+        String telegramUsername = update.getMessage().getFrom().getUserName();
+        String userConsultations = consultationTimeSlotService.getAllUserConsultations(telegramUsername);
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setText(userConsultations);
+        return sendMessage;
     }
 
     /**
@@ -78,19 +88,15 @@ public class CommandHandler {
     }
 
     private SendMessage helpCommand(Update update) {
-        // Проверка регистрации пользователя
-        if (!userService.isRegistered(update)) {
-            return userService.registrationError(update);
-        }
-        return null;
-    }
-
-    private SendMessage helloCommand(Update update) {
-        // Проверка регистрации пользователя
-        if (!userService.isRegistered(update)) {
-            return userService.registrationError(update);
-        }
-        return null;
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setText("При помощи данного боты вы можете: \n" +
+                "\n* Записаться на консультацию к эксперту" +
+                "\n* Посмотреть на какие консультации вы уже записались" +
+                "\n* Оставить отзыв на любой из блоков форума" +
+                "\n\n Если возникнут какие-либо вопросы по работе бота, обращайтесь к https://t.me/TelegramUser");
+        return sendMessage;
     }
 
     private SendMessage registrationCommand(Update update) {

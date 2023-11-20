@@ -6,8 +6,11 @@ import irnitu.forum.bot.models.entities.User;
 import irnitu.forum.bot.repositories.BusinessExpertRepository;
 import irnitu.forum.bot.repositories.ConsultationTimeSlotRepository;
 import irnitu.forum.bot.repositories.UserRepository;
+import irnitu.forum.bot.utils.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
@@ -72,4 +75,21 @@ public class ConsultationTimeSlotService {
     }
 
 
+    /**
+     * Метод для поиска всех консультаций на которые записался пользователь
+     */
+    public String getAllUserConsultations(String telegramUsername) {
+        User user = userRepository.findByTelegramUserName(telegramUsername);
+        List<ConsultationTimeSlot> userConsultations = consultationTimeSlotRepository
+                .findAllByUserId(user.getId());
+        if (userConsultations.size() == 0){
+            return "Вы не записаны ни на одну консультацию";
+        }
+        StringBuilder stringBuilder = new StringBuilder("Вы записаны на следующие консультации: ");
+        for (ConsultationTimeSlot consultation : userConsultations){
+            String consultationTime = TimeUtil.getTimeInterval(consultation.getStartConsultationTime(), consultation.getEndConsultationTime());
+            stringBuilder.append("\n").append(consultationTime);
+        }
+        return stringBuilder.toString();
+    }
 }
