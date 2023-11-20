@@ -102,13 +102,10 @@ public class ButtonHandler {
     private SendMessage listOfExpertButtons(Update update){
         log.info("HandleButton businessExpertCommand");
         long chatId = update.getCallbackQuery().getMessage().getChatId();
-        SendMessage sendMessage = new SendMessage();
         String expertName = update.getCallbackQuery().getData().split("_")[1];
         log.info("HandleButton \ngetData {}", expertName);
-        InlineKeyboardMarkup expertFreeTimeSlotKeyboard = keyboards.expertFreeTimeSlotKeyboard(expertName);
+        SendMessage sendMessage = keyboards.expertFreeTimeSlotKeyboard(expertName);
         sendMessage.setChatId(String.valueOf(chatId));
-        sendMessage.setText("Выберите время для записи к эксперту:");
-        sendMessage.setReplyMarkup(expertFreeTimeSlotKeyboard);
         return sendMessage;
     }
 
@@ -128,7 +125,7 @@ public class ButtonHandler {
             //Проверка чтобы пользователь не записался к эксперту несколько раз
             SendMessage sendMessage = new SendMessage();
             sendMessage.setText("Вы уже записаны на консультацию к данному эксперту. Нельзя " +
-                    "записать к одному эксперту несколько раз");
+                    "записаться к одному эксперту несколько раз");
             sendMessage.setChatId(String.valueOf(chatId));
             return sendMessage;
         }

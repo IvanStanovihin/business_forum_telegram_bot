@@ -9,6 +9,7 @@ import irnitu.forum.bot.services.BusinessExpertService;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
 import irnitu.forum.bot.utils.TimeUtil;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -79,7 +80,7 @@ public class Keyboards {
      * @param expertName имя эксперта для которого выполняется поиск свободных тайм слотов
      * @return список свободных тайм слотов для эксперта
      */
-    public InlineKeyboardMarkup expertFreeTimeSlotKeyboard(String expertName) {
+    public SendMessage expertFreeTimeSlotKeyboard(String expertName) {
         List<ConsultationTimeSlot> expertFreeTimeSlot = consultationTimeSlotService.getFreeSlot(expertName);
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         for (ConsultationTimeSlot timeSlot : expertFreeTimeSlot){
@@ -94,7 +95,17 @@ public class Keyboards {
         }
         InlineKeyboardMarkup markupInLine = new InlineKeyboardMarkup();
         markupInLine.setKeyboard(rowsInLine);
-        return markupInLine;
+        String message;
+        if(expertFreeTimeSlot.isEmpty()){
+            message = "Свободные тайм-слоты для консультации с экспертом уже закончились";
+        }else{
+            message = "Выберите тайм-слот для записи к эксперту:";
+        }
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setReplyMarkup(markupInLine);
+        sendMessage.setText(message);
+        return sendMessage;
     }
 
     /**
