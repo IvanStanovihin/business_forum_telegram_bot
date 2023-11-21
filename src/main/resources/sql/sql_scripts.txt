@@ -1,0 +1,27 @@
+INSERT INTO education_blocks(id, name) VALUES ('100', 'Лекции');
+INSERT INTO education_blocks(id, name) VALUES ('101', 'Выступление спикеров');
+INSERT INTO education_blocks(id, name) VALUES ('102', 'Экспертные консультации');
+INSERT INTO education_blocks(id, name) VALUES ('103', 'Конкурс предпринимателей');
+INSERT INTO education_blocks(id, name) VALUES ('104', 'Активности');
+
+
+INSERT INTO business_experts(id, name, description) VALUES('100', 'Джейсон Стетхем', 'Играл в Перевозчке');
+INSERT INTO business_experts(id, name, description) VALUES('101', 'Арнольд Шварцнегер', 'Снимался в Терминаторе');
+INSERT INTO business_experts(id, name, description) VALUES('102', 'Сильвестор Сталлоне', 'Шлавная роль в фильме Рокки');
+INSERT INTO business_experts(id, name, description) VALUES('103', 'Дольф Лундгрен', 'Крутой перц из Неудержимых');
+INSERT INTO business_experts(id, name, description) VALUES('104', 'Джекки Чан', 'Выполняет все трюки без каскадёра');
+
+
+INSERT INTO users(id, registration_information, telegram_name) VALUES ('100', 'Антонов А. А.', '@Antonov');
+INSERT INTO users(id, registration_information, telegram_name) VALUES ('101', 'Петров П. П.', '@Petrov');
+INSERT INTO users(id, registration_information, telegram_name) VALUES ('102', 'Иванов И. И.', '@Ivanov');
+INSERT INTO users(id, registration_information, telegram_name) VALUES ('103', 'Дмитриев Д . Д.', '@Dmitriev');
+INSERT INTO users(id, registration_information, telegram_name) VALUES ('104', 'Сидоров С. С.', '@Sidorov');
+
+
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(100, '2022-10-01T00:18:00', '2022-10-01T00:18:10', 100, 100);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(101, '2022-10-01T00:18:10', '2022-10-01T00:18:20', 100, 101);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(102, '2022-10-01T00:18:20', '2022-10-01T00:18:30', 100, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(103, '2022-10-01T00:18:30', '2022-10-01T00:18:40', 100, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(104, '2022-10-01T00:18:40', '2022-10-01T00:18:50', 100, null);
+
