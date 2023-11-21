@@ -7,6 +7,7 @@ import irnitu.forum.bot.handlers.CommandHandler;
 import irnitu.forum.bot.handlers.TextHandler;
 import irnitu.forum.bot.menu.BotMenu;
 import irnitu.forum.bot.services.UserService;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -41,10 +42,11 @@ public class BusinessForumBot extends TelegramLongPollingBot {
         this.userService = userService;
         this.commandHandler = commandHandler;
         this.textHandler = textHandler;
-        initMenu();
     }
 
+    @PostConstruct
     private void initMenu() {
+        log.info("Init method");
         SetMyCommands botMenu = BotMenu.getMenuCommands();
         try {
             this.execute(botMenu);

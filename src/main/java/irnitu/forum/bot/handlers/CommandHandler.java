@@ -3,6 +3,7 @@ package irnitu.forum.bot.handlers;
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
+import irnitu.forum.bot.services.ForumScheduleService;
 import irnitu.forum.bot.services.UserService;
 import irnitu.forum.bot.services.BotStatesService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,15 +19,18 @@ public class CommandHandler {
     private final Keyboards keyboards;
     private final UserService userService;
     private final BotStatesService botStatesService;
+    private final ForumScheduleService forumScheduleService;
     private final ConsultationTimeSlotService consultationTimeSlotService;
 
     public CommandHandler(Keyboards keyboards,
                           UserService userService,
                           BotStatesService botStatesService,
+                          ForumScheduleService forumScheduleService,
                           ConsultationTimeSlotService consultationTimeSlotService) {
         this.keyboards = keyboards;
         this.userService = userService;
         this.botStatesService = botStatesService;
+        this.forumScheduleService = forumScheduleService;
         this.consultationTimeSlotService = consultationTimeSlotService;
     }
 
@@ -39,6 +43,8 @@ public class CommandHandler {
                 return registrationCommand(update);
             case UserCommands.HELP:
                 return helpCommand(update);
+            case UserCommands.FORUM_SCHEDULE:
+                return forumSchedule(update);
             case UserCommands.ADD_CONSULTATION:
                 return scheduleCommand(update);
             case UserCommands.FEEDBACK:
@@ -49,6 +55,18 @@ public class CommandHandler {
                 log.error("Unexpected command entered!");
                 return null;
         }
+    }
+
+    /**
+     * Метод для кнопки "программа форума".
+     */
+    private SendMessage forumSchedule(Update update) {
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
+        String schedule = forumScheduleService.getForumScheduleMessage();
+        sendMessage.setText(schedule);
+        return sendMessage;
     }
 
 

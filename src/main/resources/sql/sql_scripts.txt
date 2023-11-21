@@ -25,3 +25,14 @@ INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultatio
 INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(103, '2022-10-01T00:18:30', '2022-10-01T00:18:40', 100, null);
 INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(104, '2022-10-01T00:18:40', '2022-10-01T00:18:50', 100, null);
 
+
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (100, '30.11 10:00', '10:45', 'Выступление крутого спикера');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (101, '30.11 11:00', '11:30', 'Слушаем лекцию про маркетинг');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (102, '30.11 12:00', '12:45', 'Смотрим кино про успешный успех');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (103, '30.11 13:00', '14:00', 'Знакомимся с другими участниками форума');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (104, '30.11 14:10', '16:45', 'Вкусно пьём кофе');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (105, '30.11 17:00', '19:45', 'Смотрим на самого крутого предпринимателя');
+
+
+
+

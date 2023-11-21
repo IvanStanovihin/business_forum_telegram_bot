@@ -13,6 +13,7 @@ public class BotMenu {
     public static SetMyCommands getMenuCommands(){
         List<BotCommand> botCommands = new ArrayList<>();
         botCommands.add(new BotCommand(UserCommands.HELP, "Помощь по функциям бота"));
+        botCommands.add(new BotCommand(UserCommands.FORUM_SCHEDULE, "Программа форума"));
         botCommands.add(new BotCommand(UserCommands.ADD_CONSULTATION, "Записаться на консультацию"));
         botCommands.add(new BotCommand(UserCommands.FEEDBACK, "Оставить отзыв"));
         botCommands.add(new BotCommand(UserCommands.USER_CONSULTATIONS, "Посмотреть моё расписание консультаций"));
