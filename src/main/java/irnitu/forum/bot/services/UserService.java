@@ -54,7 +54,7 @@ public class UserService {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setText("Чтобы пользоваться ботом, необходимо зарегистрироваться!" +
-                " Нажмите кнопку \"Зарегистрироваться\"");
+                " Используйте команду \"Зарегистрироваться\" - /registration");
         return sendMessage;
     }
 
