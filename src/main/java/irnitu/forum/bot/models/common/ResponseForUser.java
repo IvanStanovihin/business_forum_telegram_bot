@@ -4,6 +4,9 @@ import lombok.Data;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
+/**
+ * Класс обёртка, для возможности отправлять пользователю разные типы ответов
+ */
 @Data
 public class ResponseForUser {
 
