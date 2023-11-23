@@ -9,8 +9,6 @@ import irnitu.forum.bot.repositories.UserRepository;
 import irnitu.forum.bot.utils.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
@@ -81,7 +79,7 @@ public class ConsultationTimeSlotService {
         List<ConsultationTimeSlot> userConsultations = consultationTimeSlotRepository
                 .findAllByUserId(user.getId());
         if (userConsultations.size() == 0){
-            return "Вы не записаны ни на одну консультацию";
+            return "Вы еще не записались ни на одну консультацию";
         }
         StringBuilder stringBuilder = new StringBuilder("Вы записаны на следующие консультации: ");
         for (ConsultationTimeSlot consultation : userConsultations){
