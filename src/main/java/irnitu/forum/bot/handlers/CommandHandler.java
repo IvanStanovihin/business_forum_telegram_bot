@@ -8,15 +8,15 @@ import irnitu.forum.bot.services.FeedbackService;
 import irnitu.forum.bot.services.ForumScheduleService;
 import irnitu.forum.bot.services.UserService;
 import irnitu.forum.bot.services.BotStatesService;
-import java.io.File;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import static irnitu.forum.bot.constants.UserCommands.*;
 
 @Slf4j
 @Service
@@ -48,6 +48,8 @@ public class CommandHandler {
         String message = update.getMessage().getText();
         botStatesService.resetState(update.getMessage().getFrom().getUserName());
         switch (message) {
+            case UserCommands.START:
+                return startCommand(update);
             case UserCommands.REGISTRATION:
                 return registrationCommand(update);
             case UserCommands.HELP:
@@ -109,6 +111,7 @@ public class CommandHandler {
         sendMessage.setChatId(String.valueOf(chatId));
         String schedule = forumScheduleService.getForumScheduleMessage();
         sendMessage.setText(schedule);
+        sendMessage.setParseMode(ParseMode.HTML);
         return new ResponseForUser(sendMessage);
     }
 
@@ -157,6 +160,40 @@ public class CommandHandler {
                 "\n* Посмотреть на какие консультации вы уже записались" +
                 "\n* Оставить отзыв на любой из блоков форума" +
                 "\n\n Если возникнут какие-либо вопросы по работе бота, обращайтесь к https://t.me/IvanStanovihin");
+        return new ResponseForUser(sendMessage);
+    }
+
+    private ResponseForUser startCommand(Update update) {
+        long chatId = update.getMessage().getChatId();
+
+        String message = String.format("Добрый день, уважаемые участники!\n" +
+                        "\nПриветствуем вас в боте молодежного форума «PROпредпринимателей» С помощью этого бота вы сможете:" +
+                        "\n" +
+                        "\n1. Посмотреть актуальную программу мероприятия - %s" +
+                        "\n" +
+                        "\n2. Оставить отзыв о работе форума и о каждой отдельном этапе программы - %s" +
+                        "\n" +
+                        "\n3. Записаться на консультацию к экспертам-предпринимателям г. Иркутска - %s" +
+                        "\n" +
+                        "\n4. Посмотреть рассписание консультаций на которые Вы записались - %s" +
+                        "\n" +
+                        "\n5. Посмотреть рассписание консультаций всех экспертов - %s" +
+                        "\n" +
+                        "\n6. Посмотреть рассписание консультаций конкретного эксперта - %s" +
+                        "\n" +
+                        "\nДля получения информации по функциям Бота используйте - %s",
+                FORUM_SCHEDULE,
+                ADD_FEEDBACK,
+                ADD_CONSULTATION,
+                USER_CONSULTATIONS,
+                "//TODO",
+                "//TODO",
+                HELP
+        );
+
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setText(message);
         return new ResponseForUser(sendMessage);
     }
 

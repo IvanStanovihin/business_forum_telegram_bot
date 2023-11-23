@@ -10,7 +10,7 @@ public class UserCommands {
     public static final String EXPERT = "/expert";
     public static final String TIME_SLOT = "/timeslot";
     public static final String ADD_FEEDBACK = "/feedback";
-    public static final String USER_CONSULTATIONS = "/consultations";
+    public static final String USER_CONSULTATIONS = "/my_consultations";
     public static final String REGISTRATION = "/registration";
     public static final String FEEDBACK_EDUCATION_BLOCK = "/educationblock";
     public static final String CONSULTATIONS_SCHEDULE = "/consultationsschedule";
