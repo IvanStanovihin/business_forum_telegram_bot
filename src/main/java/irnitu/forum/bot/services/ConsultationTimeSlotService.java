@@ -35,7 +35,7 @@ public class ConsultationTimeSlotService {
      * @param expertName эксперт для которого выполняется поиск свободных тайм слотов
      * @return список свободных для консультации тайм слотов
      */
-    public List<ConsultationTimeSlot> getFreeSlot(String expertName){
+    public List<ConsultationTimeSlot> getExpertFreeSlot(String expertName){
         BusinessExpert expert = businessExpertRepository.findByName(expertName);
         log.info("GetFreeSlot found expert: {}", expert);
         return consultationTimeSlotRepository.findByExpertWithNullStudent(expert.getId());
@@ -44,8 +44,6 @@ public class ConsultationTimeSlotService {
     /**
      * Метод для проверки записи пользователя на консультацию.
      * Если пользователь уже записан к данному эксперту - true
-     * @param expertId
-     * @return
      */
     public boolean isUserAlreadyTakeTimeslot(String username, Long expertId){
         User user = userRepository.findByTelegramUserName(username);
@@ -87,9 +85,32 @@ public class ConsultationTimeSlotService {
         }
         StringBuilder stringBuilder = new StringBuilder("Вы записаны на следующие консультации: ");
         for (ConsultationTimeSlot consultation : userConsultations){
+            String expertInfo = consultation.getExpert().getName();
             String consultationTime = TimeUtil.getTimeInterval(consultation.getStartConsultationTime(), consultation.getEndConsultationTime());
-            stringBuilder.append("\n").append(consultationTime);
+            stringBuilder.append("\n").append(consultationTime).append(" ").append(expertInfo);
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * Формирование текста в котором содержится информация о расписании всех консультаций с экспертами
+     */
+    public String getAllExpertsTimeSlots(){
+        StringBuilder timeSlotsInfo = new StringBuilder("Расписание всех консультаций:");
+        List<ConsultationTimeSlot> allTimeSlots = consultationTimeSlotRepository.findAllGroupByExpert();
+        for(ConsultationTimeSlot timeSlot : allTimeSlots){
+            String expertInfo = timeSlot.getExpert().getName();
+            String studentInfo = "СВОБОДНО";
+            if (timeSlot.getStudent() != null) {
+                studentInfo = "Информация о регистрации: "
+                    + timeSlot.getStudent().getRegistrationInformation()
+                    + "; telegram: "
+                    + timeSlot.getStudent().getTelegramUserName()
+                    + "; ЗАНЯТО";
+            }
+            String timeInfo = TimeUtil.getTimeInterval(timeSlot.getStartConsultationTime(), timeSlot.getEndConsultationTime());
+            timeSlotsInfo.append("\n\n").append(expertInfo).append("\n").append(" ").append(timeInfo).append(" ").append(studentInfo);
+        }
+        return timeSlotsInfo.toString();
     }
 }

@@ -16,5 +16,6 @@ public class ForumSchedule {
   private String description;
   private String startDateTime;
   private String endDateTime;
+  private String place;
 
 }

@@ -5,18 +5,18 @@ INSERT INTO education_blocks(id, name) VALUES ('103', 'Конкурс предп
 INSERT INTO education_blocks(id, name) VALUES ('104', 'Активности');
 
 
-INSERT INTO business_experts(id, name, description) VALUES('100', 'Джейсон Стетхем', 'Играл в Перевозчке');
+INSERT INTO business_experts(id, name, description) VALUES('100', 'Джейсон Стетхем', 'Играл в Перевозчике');
 INSERT INTO business_experts(id, name, description) VALUES('101', 'Арнольд Шварцнегер', 'Снимался в Терминаторе');
-INSERT INTO business_experts(id, name, description) VALUES('102', 'Сильвестор Сталлоне', 'Шлавная роль в фильме Рокки');
-INSERT INTO business_experts(id, name, description) VALUES('103', 'Дольф Лундгрен', 'Крутой перц из Неудержимых');
+INSERT INTO business_experts(id, name, description) VALUES('102', 'Сильвестор Сталлоне', 'Главная роль в фильме Рокки');
+INSERT INTO business_experts(id, name, description) VALUES('103', 'Дольф Лундгрен', 'Крутой перец из Неудержимых');
 INSERT INTO business_experts(id, name, description) VALUES('104', 'Джекки Чан', 'Выполняет все трюки без каскадёра');
 
 
-INSERT INTO users(id, registration_information, telegram_name) VALUES ('100', 'Антонов А. А.', '@Antonov');
-INSERT INTO users(id, registration_information, telegram_name) VALUES ('101', 'Петров П. П.', '@Petrov');
-INSERT INTO users(id, registration_information, telegram_name) VALUES ('102', 'Иванов И. И.', '@Ivanov');
-INSERT INTO users(id, registration_information, telegram_name) VALUES ('103', 'Дмитриев Д . Д.', '@Dmitriev');
-INSERT INTO users(id, registration_information, telegram_name) VALUES ('104', 'Сидоров С. С.', '@Sidorov');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES ('100', 'Антонов А. А.', '@Antonov');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES ('101', 'Петров П. П.', '@Petrov');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES ('102', 'Иванов И. И.', '@Ivanov');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES ('103', 'Дмитриев Д . Д.', '@Dmitriev');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES ('104', 'Сидоров С. С.', '@Sidorov');
 
 
 INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(100, '2022-10-01T00:18:00', '2022-10-01T00:18:10', 100, 100);
@@ -26,12 +26,12 @@ INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultatio
 INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(104, '2022-10-01T00:18:40', '2022-10-01T00:18:50', 100, null);
 
 
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (100, '30.11 10:00', '10:45', 'Выступление крутого спикера');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (101, '30.11 11:00', '11:30', 'Слушаем лекцию про маркетинг');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (102, '30.11 12:00', '12:45', 'Смотрим кино про успешный успех');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (103, '30.11 13:00', '14:00', 'Знакомимся с другими участниками форума');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (104, '30.11 14:10', '16:45', 'Вкусно пьём кофе');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description) VALUES (105, '30.11 17:00', '19:45', 'Смотрим на самого крутого предпринимателя');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (100, '30.11 10:00', '10:45', 'Выступление крутого спикера', 'Красный зал');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (101, '30.11 11:00', '11:30', 'Слушаем лекцию про маркетинг', 'Синий зал');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (102, '30.11 12:00', '12:45', 'Смотрим кино про успешный успех', 'Основной зал');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (103, '30.11 13:00', '14:00', 'Знакомимся с другими участниками форума', 'Основной зал');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (104, '30.11 14:10', '16:45', 'Вкусно пьём кофе', 'Красный зал');
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (105, '30.11 17:00', '19:45', 'Смотрим на самого крутого предпринимателя', 'Основной зал');
 
 
 

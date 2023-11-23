@@ -18,6 +18,7 @@ public class BotMenu {
         botCommands.add(new BotCommand(UserCommands.FEEDBACK, "Оставить отзыв"));
         botCommands.add(new BotCommand(UserCommands.USER_CONSULTATIONS, "Посмотреть моё расписание консультаций"));
         botCommands.add(new BotCommand(UserCommands.REGISTRATION, "Зарегистрироваться"));
+        botCommands.add(new BotCommand(UserCommands.CONSULTATIONS_SCHEDULE, "Расписание консультаций"));
         return new SetMyCommands(botCommands, new BotCommandScopeDefault(), null);
     }
 }

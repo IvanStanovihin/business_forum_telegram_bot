@@ -51,10 +51,25 @@ public class CommandHandler {
                 return feedbackCommand(update);
             case UserCommands.USER_CONSULTATIONS:
                 return consultationsCommand(update);
+            case UserCommands.CONSULTATIONS_SCHEDULE:
+                return consultationsScheduleCommand(update);
             default:
                 log.error("Unexpected command entered!");
                 return null;
         }
+    }
+
+    /**
+     * Обработка команды, которая показывает пользователю расписание всех консультаций с экспертами
+     * и занятых и свободных
+     */
+    private SendMessage consultationsScheduleCommand(Update update) {
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        String consultationsSchedule = consultationTimeSlotService.getAllExpertsTimeSlots();
+        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setText(consultationsSchedule);
+        return sendMessage;
     }
 
     /**
@@ -109,11 +124,11 @@ public class CommandHandler {
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
-        sendMessage.setText("При помощи данного боты вы можете: \n" +
+        sendMessage.setText("При помощи данного бота вы можете: \n" +
                 "\n* Записаться на консультацию к эксперту" +
                 "\n* Посмотреть на какие консультации вы уже записались" +
                 "\n* Оставить отзыв на любой из блоков форума" +
-                "\n\n Если возникнут какие-либо вопросы по работе бота, обращайтесь к https://t.me/TelegramUser");
+                "\n\n Если возникнут какие-либо вопросы по работе бота, обращайтесь к https://t.me/IvanStanovihin");
         return sendMessage;
     }
 
@@ -141,7 +156,7 @@ public class CommandHandler {
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         InlineKeyboardMarkup businessExpertKeyboard = keyboards.expertsKeyboard();
-        sendMessage.setText("Выберите эксперта, к которому хотите записаться на консультацию");
+        sendMessage.setText("Выберите эксперта, к которому хотите записаться на консультацию:");
         sendMessage.setReplyMarkup(businessExpertKeyboard);
         sendMessage.setChatId(String.valueOf(chatId));
         return sendMessage;

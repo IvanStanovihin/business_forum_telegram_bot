@@ -16,10 +16,14 @@ public class BusinessExpertService {
         this.businessExpertRepository = businessExpertRepository;
     }
 
-    public List<String> getExpertNames(){
+    public List<String> getExpertNamesAndDescriptions(){
         return businessExpertRepository.findAll()
                 .stream()
                 .map(BusinessExpert::getName)
                 .collect(Collectors.toList());
+    }
+
+    public List<BusinessExpert> getAll(){
+        return businessExpertRepository.findAll();
     }
 }

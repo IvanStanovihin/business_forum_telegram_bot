@@ -13,5 +13,6 @@ public class UserCommands {
     public static final String USER_CONSULTATIONS = "/consultations";
     public static final String REGISTRATION = "/registration";
     public static final String FEEDBACK_EDUCATION_BLOCK = "/educationblock";
+    public static final String CONSULTATIONS_SCHEDULE = "/consultationsschedule";
 
 }

@@ -1,7 +1,7 @@
 package irnitu.forum.bot.buttons;
 
-import irnitu.forum.bot.constants.Buttons;
 import irnitu.forum.bot.constants.UserCommands;
+import irnitu.forum.bot.models.entities.BusinessExpert;
 import irnitu.forum.bot.models.entities.ConsultationTimeSlot;
 import irnitu.forum.bot.models.entities.EducationBlock;
 import irnitu.forum.bot.repositories.EducationBlockRepository;
@@ -60,10 +60,13 @@ public class Keyboards {
      */
     public InlineKeyboardMarkup expertsKeyboard(){
         List<InlineKeyboardButton> expertButtons = new ArrayList<>();
-        expertButtons = businessExpertService.getExpertNames()
-                .stream()
-                .map(expertName -> createButton((UserCommands.EXPERT + "_" + expertName), expertName))
-                .collect(Collectors.toList());
+        List<BusinessExpert> allExperts = businessExpertService.getAll();
+        for(BusinessExpert expert : allExperts){
+            String buttonCallback = UserCommands.EXPERT + "_" + expert.getName();
+            String buttonText = expert.getName() + ": \"" + expert.getDescription() + "\"";
+            InlineKeyboardButton button = createButton(buttonCallback, buttonText);
+            expertButtons.add(button);
+        }
 
         List<List<InlineKeyboardButton>> rowsInLine = expertButtons
                 .stream()
@@ -81,7 +84,7 @@ public class Keyboards {
      * @return список свободных тайм слотов для эксперта
      */
     public SendMessage expertFreeTimeSlotKeyboard(String expertName) {
-        List<ConsultationTimeSlot> expertFreeTimeSlot = consultationTimeSlotService.getFreeSlot(expertName);
+        List<ConsultationTimeSlot> expertFreeTimeSlot = consultationTimeSlotService.getExpertFreeSlot(expertName);
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         for (ConsultationTimeSlot timeSlot : expertFreeTimeSlot){
             String buttonText = TimeUtil.getTimeInterval(timeSlot.getStartConsultationTime(), timeSlot.getEndConsultationTime());
