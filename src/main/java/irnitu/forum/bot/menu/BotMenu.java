@@ -15,10 +15,11 @@ public class BotMenu {
         botCommands.add(new BotCommand(UserCommands.HELP, "Помощь по функциям бота"));
         botCommands.add(new BotCommand(UserCommands.FORUM_SCHEDULE, "Программа форума"));
         botCommands.add(new BotCommand(UserCommands.ADD_CONSULTATION, "Записаться на консультацию"));
-        botCommands.add(new BotCommand(UserCommands.FEEDBACK, "Оставить отзыв"));
+        botCommands.add(new BotCommand(UserCommands.ADD_FEEDBACK, "Оставить отзыв"));
         botCommands.add(new BotCommand(UserCommands.USER_CONSULTATIONS, "Посмотреть моё расписание консультаций"));
         botCommands.add(new BotCommand(UserCommands.REGISTRATION, "Зарегистрироваться"));
         botCommands.add(new BotCommand(UserCommands.CONSULTATIONS_SCHEDULE, "Расписание консультаций"));
+        botCommands.add(new BotCommand(UserCommands.ALL_FEEDBACKS, "Посмотреть все отзывы"));
         return new SetMyCommands(botCommands, new BotCommandScopeDefault(), null);
     }
 }

@@ -1,5 +1,6 @@
 package irnitu.forum.bot.handlers;
 
+import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.models.entities.BotState;
 import irnitu.forum.bot.services.BotStatesService;
 import irnitu.forum.bot.services.FeedbackService;
@@ -28,10 +29,13 @@ public class TextHandler {
         this.feedbackService = feedbackService;
     }
 
-    public SendMessage handleText(Update update){
+    public ResponseForUser handleText(Update update){
         log.info("HandleText");
         BotState botState = botStatesService.getState(update.getMessage().getFrom().getUserName());
         botStatesService.resetState(update.getMessage().getFrom().getUserName());
+        if(botState == null || botState.getState() == null){
+            return null;
+        }
         switch (botState.getState()){
             case WAIT_REGISTRATION:
                 return registrationText(update);
@@ -46,19 +50,19 @@ public class TextHandler {
     /**
      * Метод для обработки текста, который пользователь ввёл для регистрации в боте
      */
-    private SendMessage registrationText(Update update){
+    private ResponseForUser registrationText(Update update){
         userService.register(update);
         SendMessage sendMessage = new SendMessage();
         Long chatId = update.getMessage().getChatId();
         sendMessage.setText("Вы успешно зарегистрированы! Можете пользоваться ботом");
         sendMessage.setChatId(String.valueOf(chatId));
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
     /**
      * Обработка состояния бота, когда он ожидает от пользователя ввода отзыва.
      */
-    private SendMessage feedbackText(Update update, BotState botState){
+    private ResponseForUser feedbackText(Update update, BotState botState){
         log.info("HandleText handleFeedbackText");
         String userTelegramName = update.getMessage().getFrom().getUserName();
         String feedback = update.getMessage().getText();
@@ -68,6 +72,6 @@ public class TextHandler {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setText("Спасибо за отзыв!");
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 }

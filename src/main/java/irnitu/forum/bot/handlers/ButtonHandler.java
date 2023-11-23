@@ -2,6 +2,7 @@ package irnitu.forum.bot.handlers;
 
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
+import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.services.BotStatesService;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
 import irnitu.forum.bot.services.FeedbackService;
@@ -37,7 +38,7 @@ public class ButtonHandler {
         this.feedbackService = feedbackService;
     }
 
-    public SendMessage handleButton(Update update){
+    public ResponseForUser handleButton(Update update){
         log.info("HandleButton ");
         String messageCallback = update.getCallbackQuery().getData().split("_")[0];
         botStatesService.resetState(update.getCallbackQuery().getFrom().getUserName());
@@ -81,7 +82,7 @@ public class ButtonHandler {
     /**
      * Кнопка выбора блока форума, на которую пользователь хочет оставить отзыв.
      */
-    private SendMessage educationBlockButton(Update update) {
+    private ResponseForUser educationBlockButton(Update update) {
         String userTelegramName = update.getCallbackQuery().getFrom().getUserName();
         String educationBlockId = update.getCallbackQuery().getData().split("_")[1];
         botStatesService.setFeedbackState(userTelegramName, educationBlockId);
@@ -90,7 +91,7 @@ public class ButtonHandler {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setText("Введите ваш отзыв:");
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
     /**
@@ -99,14 +100,14 @@ public class ButtonHandler {
      * @param update
      * @return
      */
-    private SendMessage listOfExpertButtons(Update update){
+    private ResponseForUser listOfExpertButtons(Update update){
         log.info("HandleButton businessExpertCommand");
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         String expertName = update.getCallbackQuery().getData().split("_")[1];
         log.info("HandleButton \ngetData {}", expertName);
         SendMessage sendMessage = keyboards.expertFreeTimeSlotKeyboard(expertName);
         sendMessage.setChatId(String.valueOf(chatId));
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
     /**
@@ -114,7 +115,7 @@ public class ButtonHandler {
      * @param update
      * @return
      */
-    private SendMessage timeslotButton(Update update){
+    private ResponseForUser timeslotButton(Update update){
         log.info("HandleButton takeExpertTimeslot");
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         Long timeslotId = Long.parseLong(update.getCallbackQuery().getData().split("_")[1]);
@@ -127,12 +128,12 @@ public class ButtonHandler {
             sendMessage.setText("Вы уже записаны на консультацию к данному эксперту. Нельзя " +
                     "записаться к одному эксперту несколько раз");
             sendMessage.setChatId(String.valueOf(chatId));
-            return sendMessage;
+            return new ResponseForUser(sendMessage);
         }
         consultationTimeSlotService.takeTimeslot(timeslotId, telegramUsername, expertId);
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("Вы записаны на консультацию!");
         sendMessage.setChatId(String.valueOf(chatId));
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 }

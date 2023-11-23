@@ -6,6 +6,7 @@ import irnitu.forum.bot.handlers.ButtonHandler;
 import irnitu.forum.bot.handlers.CommandHandler;
 import irnitu.forum.bot.handlers.TextHandler;
 import irnitu.forum.bot.menu.BotMenu;
+import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.services.UserService;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -72,27 +73,32 @@ public class BusinessForumBot extends TelegramLongPollingBot {
         if (update.hasCallbackQuery()) {
             //Обработка нажатий на кнопки
             log.info("Update has callback query");
-            SendMessage reply = buttonHandler.handleButton(update);
+            ResponseForUser reply = buttonHandler.handleButton(update);
             sendToUser(reply);
         } else if (update.getMessage().getText().charAt(0) == '/') {
             //Обработка команд. Текст, который пришёл от пользователя и начинается с символа /
             log.info("Update has command");
-            SendMessage sendMessage = commandHandler.handleCommand(update);
-            sendToUser(sendMessage);
+            ResponseForUser responseForUser = commandHandler.handleCommand(update);
+            sendToUser(responseForUser);
         } else{
             //Обработка простого текста, введённого пользователем
             log.info("Update is simple text");
-            SendMessage sendMessage = textHandler.handleText(update);
-            sendToUser(sendMessage);
+            ResponseForUser responseForUser = textHandler.handleText(update);
+            sendToUser(responseForUser);
         }
     }
 
 
-    private void sendToUser(SendMessage sendMessage) {
+    private void sendToUser(ResponseForUser responseForUser) {
         try {
-            if (sendMessage != null) {
-                execute(sendMessage);
-                log.info("StartCommand reply sent");
+            if (responseForUser != null) {
+                if (responseForUser.getSendMessage() != null) {
+                    execute(responseForUser.getSendMessage());
+                }
+                if (responseForUser.getSendDocument() != null){
+                    execute(responseForUser.getSendDocument());
+                }
+                log.info("ResponseForUser sent");
             } else {
                 log.info("Send message == null");
             }

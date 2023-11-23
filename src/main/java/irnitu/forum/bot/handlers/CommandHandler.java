@@ -2,13 +2,19 @@ package irnitu.forum.bot.handlers;
 
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
+import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
+import irnitu.forum.bot.services.FeedbackService;
 import irnitu.forum.bot.services.ForumScheduleService;
 import irnitu.forum.bot.services.UserService;
 import irnitu.forum.bot.services.BotStatesService;
+import java.io.File;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
@@ -20,21 +26,24 @@ public class CommandHandler {
     private final UserService userService;
     private final BotStatesService botStatesService;
     private final ForumScheduleService forumScheduleService;
+    private final FeedbackService feedbackService;
     private final ConsultationTimeSlotService consultationTimeSlotService;
 
     public CommandHandler(Keyboards keyboards,
                           UserService userService,
+                          FeedbackService feedbackService,
                           BotStatesService botStatesService,
                           ForumScheduleService forumScheduleService,
                           ConsultationTimeSlotService consultationTimeSlotService) {
         this.keyboards = keyboards;
         this.userService = userService;
+        this.feedbackService = feedbackService;
         this.botStatesService = botStatesService;
         this.forumScheduleService = forumScheduleService;
         this.consultationTimeSlotService = consultationTimeSlotService;
     }
 
-    public SendMessage handleCommand(Update update) {
+    public ResponseForUser handleCommand(Update update) {
         log.info("HandleCommand");
         String message = update.getMessage().getText();
         botStatesService.resetState(update.getMessage().getFrom().getUserName());
@@ -47,12 +56,14 @@ public class CommandHandler {
                 return forumSchedule(update);
             case UserCommands.ADD_CONSULTATION:
                 return scheduleCommand(update);
-            case UserCommands.FEEDBACK:
+            case UserCommands.ADD_FEEDBACK:
                 return feedbackCommand(update);
             case UserCommands.USER_CONSULTATIONS:
                 return consultationsCommand(update);
             case UserCommands.CONSULTATIONS_SCHEDULE:
                 return consultationsScheduleCommand(update);
+            case UserCommands.ALL_FEEDBACKS:
+                return feedbacksCommand(update);
             default:
                 log.error("Unexpected command entered!");
                 return null;
@@ -60,38 +71,55 @@ public class CommandHandler {
     }
 
     /**
+     * Обработка нажатия пользователем кнопки, которая показывает все отзывы участников
+     */
+    private ResponseForUser feedbacksCommand(Update update) {
+        long chatId = update.getMessage().getChatId();
+        SendDocument sendDocument = null;
+        try {
+            sendDocument = new SendDocument();
+            sendDocument.setChatId(String.valueOf(chatId));
+            sendDocument.setDocument(feedbackService.getAllFeedbacks());
+        }catch (IOException ex){
+            log.error("Error while creating excel file with user feedbacks");
+            ex.printStackTrace();
+        }
+        return new ResponseForUser(sendDocument);
+    }
+
+    /**
      * Обработка команды, которая показывает пользователю расписание всех консультаций с экспертами
      * и занятых и свободных
      */
-    private SendMessage consultationsScheduleCommand(Update update) {
+    private ResponseForUser consultationsScheduleCommand(Update update) {
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         String consultationsSchedule = consultationTimeSlotService.getAllExpertsTimeSlots();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setText(consultationsSchedule);
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
     /**
      * Метод для кнопки "программа форума".
      */
-    private SendMessage forumSchedule(Update update) {
+    private ResponseForUser forumSchedule(Update update) {
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
         String schedule = forumScheduleService.getForumScheduleMessage();
         sendMessage.setText(schedule);
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
 
     /**
      * Метод для обработки кнопки "мои консультации".
      */
-    private SendMessage consultationsCommand(Update update) {
+    private ResponseForUser consultationsCommand(Update update) {
         // Проверка регистрации пользователя
         if (!userService.isRegistered(update)) {
-            return userService.registrationError(update);
+            return new ResponseForUser(userService.registrationError(update));
         }
         String telegramUsername = update.getMessage().getFrom().getUserName();
         String userConsultations = consultationTimeSlotService.getAllUserConsultations(telegramUsername);
@@ -99,17 +127,17 @@ public class CommandHandler {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setText(userConsultations);
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
     /**
      * Метод для обработки нажатия пользователем на кнопку "Оставить отзыв". В методе создаётся
      * клавиатура со всеми блоками форума на который пользователь может написать отзыв.
      */
-    private SendMessage feedbackCommand(Update update) {
+    private ResponseForUser feedbackCommand(Update update) {
         // Проверка регистрации пользователя
         if (!userService.isRegistered(update)) {
-            return userService.registrationError(update);
+            return new ResponseForUser(userService.registrationError(update));
         }
         InlineKeyboardMarkup educationBlocksMarkup =  keyboards.educationSectionsKeyboard();
         long chatId = update.getMessage().getChatId();
@@ -117,10 +145,10 @@ public class CommandHandler {
         sendMessage.setText("Выберите блок форума на который хотите оставить отзыв:");
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setReplyMarkup(educationBlocksMarkup);
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
-    private SendMessage helpCommand(Update update) {
+    private ResponseForUser helpCommand(Update update) {
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
@@ -129,17 +157,17 @@ public class CommandHandler {
                 "\n* Посмотреть на какие консультации вы уже записались" +
                 "\n* Оставить отзыв на любой из блоков форума" +
                 "\n\n Если возникнут какие-либо вопросы по работе бота, обращайтесь к https://t.me/IvanStanovihin");
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
-    private SendMessage registrationCommand(Update update) {
+    private ResponseForUser registrationCommand(Update update) {
         String userTelegramName = update.getMessage().getFrom().getUserName();
         botStatesService.setRegistrationState(userTelegramName);
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("Введите ФИО и номер телефона:");
         sendMessage.setChatId(String.valueOf(chatId));
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
     /**
@@ -147,11 +175,11 @@ public class CommandHandler {
      * @param update
      * @return
      */
-    private SendMessage scheduleCommand(Update update){
+    private ResponseForUser scheduleCommand(Update update){
         log.info("HandleButton scheduleCommand");
         // Проверка регистрации пользователя
         if (!userService.isRegistered(update)) {
-            return userService.registrationError(update);
+            return new ResponseForUser(userService.registrationError(update));
         }
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
@@ -159,7 +187,7 @@ public class CommandHandler {
         sendMessage.setText("Выберите эксперта, к которому хотите записаться на консультацию:");
         sendMessage.setReplyMarkup(businessExpertKeyboard);
         sendMessage.setChatId(String.valueOf(chatId));
-        return sendMessage;
+        return new ResponseForUser(sendMessage);
     }
 
 }
