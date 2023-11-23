@@ -36,7 +36,14 @@ public class BotStatesService {
     }
 
     public BotState getState(String telegramUserName){
-        return botStateRepository.findByUserTelegramName(telegramUserName);
+        BotState botState = botStateRepository.findByUserTelegramName(telegramUserName);
+        if (botState == null){
+            botState = new BotState()
+                .setUserTelegramName(telegramUserName)
+                .setState(BotStateNames.EMPTY_STATE);
+            botStateRepository.save(botState);
+        }
+        return botState;
     }
 
     /**

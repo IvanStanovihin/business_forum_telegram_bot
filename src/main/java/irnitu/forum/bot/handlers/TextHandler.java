@@ -33,9 +33,6 @@ public class TextHandler {
         log.info("HandleText");
         BotState botState = botStatesService.getState(update.getMessage().getFrom().getUserName());
         botStatesService.resetState(update.getMessage().getFrom().getUserName());
-        if(botState == null || botState.getState() == null){
-            return null;
-        }
         switch (botState.getState()){
             case WAIT_REGISTRATION:
                 return registrationText(update);
