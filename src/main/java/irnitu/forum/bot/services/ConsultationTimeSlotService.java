@@ -94,20 +94,20 @@ public class ConsultationTimeSlotService {
      * Формирование текста в котором содержится информация о расписании всех консультаций с экспертами
      */
     public String getAllExpertsTimeSlots(){
-        StringBuilder timeSlotsInfo = new StringBuilder("Расписание всех консультаций:");
+        StringBuilder timeSlotsInfo = new StringBuilder("<b>Расписание всех консультаций:\n</b>");
         List<ConsultationTimeSlot> allTimeSlots = consultationTimeSlotRepository.findAllGroupByExpert();
         for(ConsultationTimeSlot timeSlot : allTimeSlots){
-            String expertInfo = timeSlot.getExpert().getName();
-            String studentInfo = "СВОБОДНО";
+            String expertInfo = String.format("<b>Эксперт:</b> %s", timeSlot.getExpert().getName());
+            String studentInfo = "\n<strong>СВОБОДНО</strong>";
             if (timeSlot.getStudent() != null) {
-                studentInfo = "Информация о регистрации: "
+                studentInfo = "\n<b>Участник: </b>"
                     + timeSlot.getStudent().getRegistrationInformation()
-                    + "; telegram: "
+                    + "\n<b>telegram:</b> @"
                     + timeSlot.getStudent().getTelegramUserName()
-                    + "; ЗАНЯТО";
+                    + "\n<strong>ЗАНЯТО</strong>";
             }
-            String timeInfo = TimeUtil.getTimeInterval(timeSlot.getStartConsultationTime(), timeSlot.getEndConsultationTime());
-            timeSlotsInfo.append("\n\n").append(expertInfo).append("\n").append(" ").append(timeInfo).append(" ").append(studentInfo);
+            String timeInfo = String.format("<b>Слот:</b> %s", TimeUtil.getTimeInterval(timeSlot.getStartConsultationTime(), timeSlot.getEndConsultationTime()));
+            timeSlotsInfo.append("\n").append(expertInfo).append("\n").append(timeInfo).append(" ").append(studentInfo).append("\n-----------------");
         }
         return timeSlotsInfo.toString();
     }

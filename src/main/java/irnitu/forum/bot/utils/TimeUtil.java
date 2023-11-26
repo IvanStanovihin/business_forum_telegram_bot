@@ -10,12 +10,12 @@ public class TimeUtil {
 
     public static String getTimeInterval(LocalDateTime startInterval,
                                          LocalDateTime endInterval){
-        String day = startInterval.format(dayFormatter);
+       // String day = startInterval.format(dayFormatter);
         String startTime = startInterval.format(timeFormatter);
         String endTime = endInterval.format(timeFormatter);
 //        String startTime = timeFormatter.format(startInterval);
 //        String endTime = timeFormatter.format(endInterval);
-        return day + " " + startTime + " - " + endTime;
+        return startTime + " - " + endTime;
     }
 
 }

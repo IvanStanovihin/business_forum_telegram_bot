@@ -99,6 +99,7 @@ public class CommandHandler {
         String consultationsSchedule = consultationTimeSlotService.getAllExpertsTimeSlots();
         sendMessage.setChatId(String.valueOf(chatId));
         sendMessage.setText(consultationsSchedule);
+        sendMessage.setParseMode(ParseMode.HTML);
         return new ResponseForUser(sendMessage);
     }
 
