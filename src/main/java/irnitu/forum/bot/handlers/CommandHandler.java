@@ -161,7 +161,7 @@ public class CommandHandler {
                 "\n* Посмотреть на какие консультации вы уже записались" +
                 "\n* Оставить отзыв на любой из блоков форума" +
                 "\n\n Если возникнут какие-либо вопросы по работе бота, то "
-            + "обращайтесь к https://t.me/IvanStanovihin либо https://t.me/slavikir");
+            + "обращайтесь к: \nhttps://t.me/IvanStanovihin  \nhttps://t.me/slavikir");
         return new ResponseForUser(sendMessage);
     }
 
