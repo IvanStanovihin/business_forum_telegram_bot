@@ -79,7 +79,7 @@ public class ConsultationTimeSlotService {
         List<ConsultationTimeSlot> userConsultations = consultationTimeSlotRepository
                 .findAllByUserId(user.getId());
         if (userConsultations.size() == 0){
-            return "Вы еще не записались ни на одну консультацию";
+            return "Вы еще не записались ни на одну консультацию. Для записи на консультацию, используйте команду /consultation";
         }
         StringBuilder stringBuilder = new StringBuilder("Вы записаны на следующие консультации: ");
         for (ConsultationTimeSlot consultation : userConsultations){

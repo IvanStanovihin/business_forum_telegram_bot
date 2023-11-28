@@ -82,7 +82,7 @@ public class CommandHandler {
             sendDocument = new SendDocument();
             sendDocument.setChatId(String.valueOf(chatId));
             sendDocument.setDocument(feedbackService.getAllFeedbacks());
-        }catch (IOException ex){
+        } catch (IOException ex) {
             log.error("Error while creating excel file with user feedbacks");
             ex.printStackTrace();
         }
@@ -143,7 +143,7 @@ public class CommandHandler {
         if (!userService.isRegistered(update)) {
             return new ResponseForUser(userService.registrationError(update));
         }
-        InlineKeyboardMarkup educationBlocksMarkup =  keyboards.educationSectionsKeyboard();
+        InlineKeyboardMarkup educationBlocksMarkup = keyboards.educationSectionsKeyboard();
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setText("Выберите блок форума на который хотите оставить отзыв:");
@@ -156,12 +156,23 @@ public class CommandHandler {
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
-        sendMessage.setText("При помощи данного бота вы можете: \n" +
-                "\n* Записаться на консультацию к эксперту" +
-                "\n* Посмотреть на какие консультации вы уже записались" +
-                "\n* Оставить отзыв на любой из блоков форума" +
-                "\n\n Если возникнут какие-либо вопросы по работе бота, то "
-            + "обращайтесь к: \nhttps://t.me/IvanStanovihin  \nhttps://t.me/slavikir");
+        sendMessage.setText(String.format("При помощи данного бота вы можете: \n" +
+                                "\n<b>1.</b> Посмотреть актуальную программу мероприятия - %s" +
+                                "\n" +
+                                "\n<b>2.</b> Оставить отзыв о работе форума и о каждой отдельном этапе программы - %s" +
+                                "\n" +
+                                "\n<b>3.</b> Записаться на консультацию к экспертам-предпринимателям г. Иркутска - %s" +
+                                "\n" +
+                                "\n<b>4.</b> Посмотреть рассписание консультаций на которые Вы записались - %s" +
+                                "\n\n Если возникнут какие-либо вопросы по работе бота, то "
+                                + "обращайтесь к: \nhttps://t.me/IvanStanovihin  \nhttps://t.me/slavikir",
+                        FORUM_SCHEDULE,
+                        ADD_FEEDBACK,
+                        ADD_CONSULTATION,
+                        USER_CONSULTATIONS
+                )
+        );
+        sendMessage.setParseMode(ParseMode.HTML);
         return new ResponseForUser(sendMessage);
     }
 
@@ -179,17 +190,11 @@ public class CommandHandler {
                         "\n" +
                         "\n<b>4.</b> Посмотреть рассписание консультаций на которые Вы записались - %s" +
                         "\n" +
-                        "\n<b>5.</b> Посмотреть рассписание консультаций всех экспертов - %s" +
-                        "\n" +
-                        "\n<b>6.</b> Посмотреть рассписание консультаций конкретного эксперта - %s" +
-                        "\n" +
                         "\nДля получения информации по функциям Бота используйте - %s",
                 FORUM_SCHEDULE,
                 ADD_FEEDBACK,
                 ADD_CONSULTATION,
                 USER_CONSULTATIONS,
-                "//TODO",
-                "//TODO",
                 HELP
         );
 
@@ -212,10 +217,11 @@ public class CommandHandler {
 
     /**
      * Метод, который отправляет пользователю список кнопок для выбора эксперта на консультацию
+     *
      * @param update
      * @return
      */
-    private ResponseForUser scheduleCommand(Update update){
+    private ResponseForUser scheduleCommand(Update update) {
         log.info("HandleButton scheduleCommand");
         // Проверка регистрации пользователя
         if (!userService.isRegistered(update)) {
@@ -229,5 +235,4 @@ public class CommandHandler {
         sendMessage.setChatId(String.valueOf(chatId));
         return new ResponseForUser(sendMessage);
     }
-
 }
