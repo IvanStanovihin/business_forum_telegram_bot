@@ -9,6 +9,9 @@ import irnitu.forum.bot.services.ForumScheduleService;
 import irnitu.forum.bot.services.UserService;
 import irnitu.forum.bot.services.BotStatesService;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
@@ -29,6 +32,8 @@ public class CommandHandler {
     private final FeedbackService feedbackService;
     private final ConsultationTimeSlotService consultationTimeSlotService;
 
+    private List<String> whiteList = Arrays.asList("slavikir", "IvanStanovihin", "irinachelpanova", "VikaRinchinova", "elenagoncharova18");
+
     public CommandHandler(Keyboards keyboards,
                           UserService userService,
                           FeedbackService feedbackService,
@@ -46,6 +51,7 @@ public class CommandHandler {
     public ResponseForUser handleCommand(Update update) {
         log.info("HandleCommand");
         String message = update.getMessage().getText();
+        String user = update.getMessage().getFrom().getUserName();
         botStatesService.resetState(update.getMessage().getFrom().getUserName());
         switch (message) {
             case UserCommands.START:
@@ -63,9 +69,13 @@ public class CommandHandler {
             case UserCommands.USER_CONSULTATIONS:
                 return consultationsCommand(update);
             case UserCommands.CONSULTATIONS_SCHEDULE:
-                return consultationsScheduleCommand(update);
+                if (whiteList.contains(user)) {
+                    return consultationsScheduleCommand(update);
+                }
             case UserCommands.ALL_FEEDBACKS:
-                return feedbacksCommand(update);
+                if (whiteList.contains(user)) {
+                    return feedbacksCommand(update);
+                }
             default:
                 log.error("Unexpected command entered!");
                 return null;
@@ -154,24 +164,38 @@ public class CommandHandler {
 
     private ResponseForUser helpCommand(Update update) {
         long chatId = update.getMessage().getChatId();
+        String user = update.getMessage().getFrom().getUserName();
+        String mainMessage = String.format("При помощи данного бота вы можете: \n" +
+                        "\n<b>1.</b> Посмотреть актуальную программу мероприятия - %s" +
+                        "\n" +
+                        "\n<b>2.</b> Оставить отзыв о работе форума и о каждой отдельном этапе программы - %s" +
+                        "\n" +
+                        "\n<b>3.</b> Записаться на консультацию к экспертам-предпринимателям г. Иркутска - %s" +
+                        "\n" +
+                        "\n<b>4.</b> Посмотреть рассписание консультаций на которые Вы записались - %s" +
+                        "\n\n Если возникнут какие-либо вопросы по работе бота, то "
+                        + "обращайтесь к: \nhttps://t.me/IvanStanovihin  \nhttps://t.me/slavikir",
+                FORUM_SCHEDULE,
+                ADD_FEEDBACK,
+                ADD_CONSULTATION,
+                USER_CONSULTATIONS
+        );
+
+        StringBuilder message = new StringBuilder(mainMessage);
+
+        if(whiteList.contains(user)) {
+            String extraMessage = String.format("\n\nКоманды для организаторов: \n" +
+                            "<b>1.</b> Посмотреть общее расписание консультаций - %s \n" +
+                            "<b>2.</b> Посмотреть отзывы участников - %s",
+                    CONSULTATIONS_SCHEDULE,
+                    ALL_FEEDBACKS
+            );
+            message.append(extraMessage);
+        }
+
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
-        sendMessage.setText(String.format("При помощи данного бота вы можете: \n" +
-                                "\n<b>1.</b> Посмотреть актуальную программу мероприятия - %s" +
-                                "\n" +
-                                "\n<b>2.</b> Оставить отзыв о работе форума и о каждой отдельном этапе программы - %s" +
-                                "\n" +
-                                "\n<b>3.</b> Записаться на консультацию к экспертам-предпринимателям г. Иркутска - %s" +
-                                "\n" +
-                                "\n<b>4.</b> Посмотреть рассписание консультаций на которые Вы записались - %s" +
-                                "\n\n Если возникнут какие-либо вопросы по работе бота, то "
-                                + "обращайтесь к: \nhttps://t.me/IvanStanovihin  \nhttps://t.me/slavikir",
-                        FORUM_SCHEDULE,
-                        ADD_FEEDBACK,
-                        ADD_CONSULTATION,
-                        USER_CONSULTATIONS
-                )
-        );
+        sendMessage.setText(message.toString());
         sendMessage.setParseMode(ParseMode.HTML);
         return new ResponseForUser(sendMessage);
     }

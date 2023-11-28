@@ -9,6 +9,9 @@ import irnitu.forum.bot.menu.BotMenu;
 import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.services.UserService;
 import irnitu.forum.bot.utils.MessageSender;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
