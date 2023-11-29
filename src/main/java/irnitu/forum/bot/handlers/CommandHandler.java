@@ -231,12 +231,21 @@ public class CommandHandler {
 
     private ResponseForUser registrationCommand(Update update) {
         String userTelegramName = update.getMessage().getFrom().getUserName();
-        botStatesService.setRegistrationState(userTelegramName);
         long chatId = update.getMessage().getChatId();
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setText("Введите ФИО и номер телефона:");
-        sendMessage.setChatId(String.valueOf(chatId));
-        return new ResponseForUser(sendMessage);
+
+        if (userTelegramName == null || userTelegramName.isEmpty()) {
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setText("Мы не можем Вас зарегистрировать у Вас не установлен Telegram логин (начинается с @), " +
+                    "установите логин в информации о пользователе и используйте команду /registration заново");
+            sendMessage.setChatId(String.valueOf(chatId));
+            return new ResponseForUser(sendMessage);
+        } else {
+            botStatesService.setRegistrationState(userTelegramName);
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setText("Введите ФИО и номер телефона:");
+            sendMessage.setChatId(String.valueOf(chatId));
+            return new ResponseForUser(sendMessage);
+        }
     }
 
     /**
