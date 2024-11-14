@@ -8,7 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @Slf4j
-public class MessageSender {
+public class MessageSenderUtil {
 
   /**
    * Метод для разрезания длинных сообщений на маленькие части. Из за ограничений телеграмма
@@ -24,13 +24,20 @@ public class MessageSender {
     return splitMessages;
   }
 
+  /**
+   * В методе длинная строка нарезается на меньшие куски, по 4096 символов. Нарезанные куски
+   * перекладываются в список для дальнейшей обработки.
+   */
   public static List<String> splitString(String text){
+    int splitOffset = 0;
     List<String> splitStrings = new LinkedList<>();
     while(true){
       if (text.length() > 4096){
-        splitStrings.add(text.substring(0, 4096));
-        text = text.substring(0, 4096);
+        splitStrings.add(text.substring(splitOffset, splitOffset + 4096));
+        splitOffset += 4096;
+        text = text.substring(splitOffset);
       } else{
+        splitStrings.add(text);
         break;
       }
     }

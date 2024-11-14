@@ -48,11 +48,14 @@ public class TextHandler {
      * Метод для обработки текста, который пользователь ввёл для регистрации в боте
      */
     private ResponseForUser registrationText(Update update){
-        userService.register(update);
         SendMessage sendMessage = new SendMessage();
         Long chatId = update.getMessage().getChatId();
-        sendMessage.setText("Вы успешно зарегистрированы! Можете пользоваться ботом");
         sendMessage.setChatId(String.valueOf(chatId));
+        boolean registerSuccess = userService.register(update);
+        if (!registerSuccess){
+            sendMessage.setText("Ошибка при регистрации! Не получилось распознать ваше @Имя пользователя");
+        }
+        sendMessage.setText("Вы успешно зарегистрированы! Можете пользоваться ботом");
         return new ResponseForUser(sendMessage);
     }
 

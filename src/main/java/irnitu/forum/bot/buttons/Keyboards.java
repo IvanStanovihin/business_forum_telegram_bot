@@ -102,7 +102,7 @@ public class Keyboards {
         if(expertFreeTimeSlot.isEmpty()){
             message = "Свободные тайм-слоты для консультации с экспертом уже закончились";
         }else{
-            message = "Выберите тайм-слот для записи к эксперту:";
+            message = "Выберите тайм-слот для записи к " + expertName + ": ";
         }
 
         SendMessage sendMessage = new SendMessage();

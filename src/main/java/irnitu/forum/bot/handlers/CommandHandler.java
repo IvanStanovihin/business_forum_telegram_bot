@@ -72,10 +72,14 @@ public class CommandHandler {
                 if (whiteList.contains(user)) {
                     return consultationsScheduleCommand(update);
                 }
+                log.error("CONSULTATIONS_SCHEDULE whitelist error!");
+                return null;
             case UserCommands.ALL_FEEDBACKS:
                 if (whiteList.contains(user)) {
                     return feedbacksCommand(update);
                 }
+                log.error("ALL_FEEDBACKS whitelist error!");
+                return null;
             default:
                 log.error("Unexpected command entered!");
                 return null;
@@ -212,7 +216,7 @@ public class CommandHandler {
                         "\n" +
                         "\n<b>3.</b> Записаться на консультацию к экспертам-предпринимателям г. Иркутска - %s" +
                         "\n" +
-                        "\n<b>4.</b> Посмотреть рассписание консультаций на которые Вы записались - %s" +
+                        "\n<b>4.</b> Посмотреть расписание консультаций на которые Вы записались - %s" +
                         "\n" +
                         "\nДля получения информации по функциям Бота используйте - %s",
                 FORUM_SCHEDULE,
@@ -232,7 +236,6 @@ public class CommandHandler {
     private ResponseForUser registrationCommand(Update update) {
         String userTelegramName = update.getMessage().getFrom().getUserName();
         long chatId = update.getMessage().getChatId();
-
         if (userTelegramName == null || userTelegramName.isEmpty()) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setText("Мы не можем Вас зарегистрировать у Вас не установлен Telegram логин (начинается с @), " +

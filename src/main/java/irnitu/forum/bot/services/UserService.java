@@ -24,6 +24,7 @@ public class UserService {
      */
     public boolean isRegistered(Update update){
         String userName = update.getMessage().getFrom().getUserName();
+
         User user = userRepository.findByTelegramUserName(userName);
         if (user != null){
             //значит пользователь уже прошёл регистрацию
@@ -38,7 +39,11 @@ public class UserService {
      * Метод регистрации пользователей
      * @param update объект с данными пользователя
      */
-    public void register(Update update){
+    public boolean register(Update update){
+        if(update.getMessage().getFrom().getUserName() == null || update.getMessage().getFrom().getUserName().isEmpty()){
+            //У пользователя пустой телеграм логин. Бот не сможет корректно работать
+            return false;
+        }
         String registrationInfo = update.getMessage().getText();
         User newUser = new User()
                 .setTelegramUserName(update.getMessage().getFrom().getUserName())
@@ -46,6 +51,7 @@ public class UserService {
                 .setTelegramLastName(update.getMessage().getFrom().getLastName())
                 .setRegistrationInformation(registrationInfo);
         userRepository.save(newUser);
+        return true;
     }
 
 

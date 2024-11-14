@@ -1,48 +1,48 @@
 Manifest-Version: 1.0
 Main-Class: irnitu.forum.bot.Main
-Class-Path: spring-data-commons-2.7.0.jar slf4j-api-1.7.36.jar junit-pla
- tform-engine-1.8.2.jar commons-math3-3.6.1.jar hk2-locator-2.6.1.jar ch
- ecker-qual-3.5.0.jar spring-boot-starter-jdbc-2.7.0.jar postgresql-42.3
- .5.jar grizzly-http-server-2.4.4.jar grizzly-framework-2.4.4.jar jackso
- n-datatype-jsr310-2.13.3.jar spring-core-5.3.20.jar jakarta.inject-2.6.
- 1.jar poi-4.1.2.jar spring-web-5.3.20.jar jakarta.persistence-api-2.2.3
- .jar jersey-common-2.35.jar jackson-annotations-2.13.3.jar httpmime-4.5
- .13.jar spring-boot-2.7.0.jar jersey-media-json-jackson-2.35.jar jandex
- -2.4.2.Final.jar spring-jcl-5.3.20.jar junit-jupiter-params-5.8.2.jar c
- ommons-codec-1.15.jar jboss-logging-3.4.3.Final.jar spring-boot-starter
- -data-jpa-2.7.0.jar spring-boot-starter-json-2.7.0.jar logback-core-1.2
- .11.jar commons-io-2.8.0.jar telegrambots-5.5.0.jar jul-to-slf4j-1.7.36
- .jar tomcat-embed-el-9.0.63.jar junit-jupiter-5.7.0.jar hibernate-commo
- ns-annotations-5.1.2.Final.jar log4j-to-slf4j-2.17.2.jar jackson-jaxrs-
- base-2.13.3.jar jackson-databind-2.13.3.jar httpcore-4.4.15.jar HikariC
- P-4.0.3.jar javassist-3.25.0-GA.jar SparseBitSet-1.2.jar spring-boot-st
- arter-web-2.7.0.jar failureaccess-1.0.1.jar txw2-2.3.6.jar hk2-api-2.6.
- 1.jar jakarta.transaction-api-1.3.3.jar j2objc-annotations-1.3.jar lomb
- ok-1.18.26.jar spring-aop-5.3.20.jar jaxb-runtime-2.3.6.jar hk2-utils-2
- .6.1.jar guava-30.0-jre.jar osgi-resource-locator-1.0.3.jar spring-aspe
- cts-5.3.20.jar tomcat-embed-core-9.0.63.jar ooxml-schemas-1.4.jar logba
- ck-classic-1.2.11.jar commons-collections4-4.4.jar listenablefuture-999
- 9.0-empty-to-avoid-conflict-with-guava.jar tomcat-embed-websocket-9.0.6
- 3.jar spring-boot-starter-aop-2.7.0.jar byte-buddy-1.12.10.jar jackson-
- module-jaxb-annotations-2.13.3.jar jackson-module-parameter-names-2.13.
- 3.jar json-20180813.jar jersey-hk2-2.35.jar spring-orm-5.3.20.jar commo
- ns-compress-1.19.jar istack-commons-runtime-3.0.12.jar spring-context-5
- .3.20.jar jersey-container-grizzly2-http-2.35.jar spring-jdbc-5.3.20.ja
- r error_prone_annotations-2.3.4.jar xmlbeans-3.0.1.jar jakarta.validati
- on-api-2.0.2.jar spring-data-jpa-2.7.0.jar poi-ooxml-schemas-4.1.2.jar 
- flyway-core-8.5.11.jar spring-expression-5.3.20.jar spring-boot-starter
- -tomcat-2.7.0.jar classmate-1.5.1.jar junit-jupiter-engine-5.8.2.jar ja
- ckson-core-2.13.3.jar httpclient-4.5.13.jar spring-tx-5.3.20.jar curves
- api-1.06.jar log4j-api-2.17.2.jar grizzly-http-2.4.4.jar junit-jupiter-
- api-5.8.2.jar jersey-client-2.35.jar aopalliance-repackaged-2.6.1.jar j
- akarta.annotation-api-1.3.5.jar poi-ooxml-4.1.2.jar jakarta.xml.bind-ap
- i-2.3.3.jar spring-webmvc-5.3.20.jar opentest4j-1.2.0.jar apiguardian-a
- pi-1.1.2.jar antlr-2.7.7.jar jsr305-3.0.2.jar telegrambotsextensions-5.
- 5.0.jar telegrambots-meta-5.5.0.jar jersey-server-2.35.jar jakarta.acti
- vation-1.2.2.jar jakarta.activation-api-1.2.2.jar hibernate-core-5.6.9.
- Final.jar jackson-jaxrs-json-provider-2.13.3.jar spring-boot-starter-lo
- gging-2.7.0.jar junit-platform-commons-1.8.2.jar snakeyaml-1.30.jar spr
- ing-boot-starter-2.7.0.jar jakarta.ws.rs-api-2.1.6.jar spring-beans-5.3
- .20.jar jersey-entity-filtering-2.35.jar jackson-datatype-jdk8-2.13.3.j
- ar aspectjweaver-1.9.7.jar spring-boot-autoconfigure-2.7.0.jar
+Class-Path: junit-jupiter-5.7.0.jar jackson-datatype-jdk8-2.13.3.jar spr
+ ing-boot-starter-web-2.7.0.jar httpclient-4.5.13.jar jackson-jaxrs-base
+ -2.13.3.jar slf4j-api-1.7.36.jar jakarta.activation-1.2.2.jar junit-jup
+ iter-api-5.8.2.jar httpcore-4.4.15.jar json-20180813.jar poi-4.1.2.jar 
+ snakeyaml-1.30.jar spring-boot-starter-data-jpa-2.7.0.jar log4j-api-2.1
+ 7.2.jar jersey-entity-filtering-2.35.jar jsr305-3.0.2.jar spring-beans-
+ 5.3.20.jar spring-boot-starter-json-2.7.0.jar opentest4j-1.2.0.jar hibe
+ rnate-core-5.6.9.Final.jar junit-jupiter-engine-5.8.2.jar xmlbeans-3.0.
+ 1.jar HikariCP-4.0.3.jar flyway-core-8.5.11.jar classmate-1.5.1.jar ist
+ ack-commons-runtime-3.0.12.jar telegrambots-meta-5.5.0.jar checker-qual
+ -3.5.0.jar log4j-to-slf4j-2.17.2.jar spring-aop-5.3.20.jar jakarta.anno
+ tation-api-1.3.5.jar commons-collections4-4.4.jar jackson-databind-2.13
+ .3.jar commons-compress-1.19.jar aspectjweaver-1.9.7.jar jaxb-runtime-2
+ .3.6.jar SparseBitSet-1.2.jar jackson-datatype-jsr310-2.13.3.jar jackso
+ n-jaxrs-json-provider-2.13.3.jar spring-web-5.3.20.jar tomcat-embed-el-
+ 9.0.63.jar jersey-common-2.35.jar jakarta.activation-api-1.2.2.jar spri
+ ng-aspects-5.3.20.jar jakarta.ws.rs-api-2.1.6.jar commons-math3-3.6.1.j
+ ar hk2-utils-2.6.1.jar jakarta.validation-api-2.0.2.jar spring-boot-sta
+ rter-aop-2.7.0.jar telegrambotsextensions-5.5.0.jar jersey-hk2-2.35.jar
+  commons-codec-1.15.jar spring-data-jpa-2.7.0.jar junit-platform-engine
+ -1.8.2.jar javassist-3.25.0-GA.jar jakarta.transaction-api-1.3.3.jar ju
+ l-to-slf4j-1.7.36.jar telegrambots-5.5.0.jar logback-classic-1.2.11.jar
+  grizzly-http-2.4.4.jar commons-io-2.8.0.jar jandex-2.4.2.Final.jar spr
+ ing-boot-starter-2.7.0.jar spring-tx-5.3.20.jar grizzly-http-server-2.4
+ .4.jar ooxml-schemas-1.4.jar poi-ooxml-schemas-4.1.2.jar aopalliance-re
+ packaged-2.6.1.jar spring-boot-starter-tomcat-2.7.0.jar spring-jcl-5.3.
+ 20.jar apiguardian-api-1.1.2.jar postgresql-42.3.5.jar junit-platform-c
+ ommons-1.8.2.jar jersey-media-json-jackson-2.35.jar junit-jupiter-param
+ s-5.8.2.jar hibernate-commons-annotations-5.1.2.Final.jar lombok-1.18.2
+ 6.jar spring-webmvc-5.3.20.jar osgi-resource-locator-1.0.3.jar txw2-2.3
+ .6.jar spring-boot-starter-jdbc-2.7.0.jar jackson-module-parameter-name
+ s-2.13.3.jar byte-buddy-1.12.10.jar tomcat-embed-websocket-9.0.63.jar j
+ akarta.xml.bind-api-2.3.3.jar j2objc-annotations-1.3.jar spring-jdbc-5.
+ 3.20.jar grizzly-framework-2.4.4.jar poi-ooxml-4.1.2.jar antlr-2.7.7.ja
+ r jboss-logging-3.4.3.Final.jar hk2-api-2.6.1.jar httpmime-4.5.13.jar j
+ ersey-client-2.35.jar spring-orm-5.3.20.jar listenablefuture-9999.0-emp
+ ty-to-avoid-conflict-with-guava.jar jersey-container-grizzly2-http-2.35
+ .jar jackson-annotations-2.13.3.jar curvesapi-1.06.jar error_prone_anno
+ tations-2.3.4.jar jakarta.persistence-api-2.2.3.jar logback-core-1.2.11
+ .jar spring-core-5.3.20.jar spring-boot-starter-logging-2.7.0.jar jacks
+ on-module-jaxb-annotations-2.13.3.jar tomcat-embed-core-9.0.63.jar jack
+ son-core-2.13.3.jar jakarta.inject-2.6.1.jar spring-boot-autoconfigure-
+ 2.7.0.jar spring-boot-2.7.0.jar guava-30.0-jre.jar hk2-locator-2.6.1.ja
+ r spring-data-commons-2.7.0.jar jersey-server-2.35.jar spring-context-5
+ .3.20.jar failureaccess-1.0.1.jar spring-expression-5.3.20.jar
 

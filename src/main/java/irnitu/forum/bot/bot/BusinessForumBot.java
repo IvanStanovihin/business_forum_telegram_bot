@@ -8,7 +8,7 @@ import irnitu.forum.bot.handlers.TextHandler;
 import irnitu.forum.bot.menu.BotMenu;
 import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.services.UserService;
-import irnitu.forum.bot.utils.MessageSender;
+import irnitu.forum.bot.utils.MessageSenderUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +20,8 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChat.BotCommandScopeChatBuilder;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChatMember;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 /**
@@ -100,7 +102,7 @@ public class BusinessForumBot extends TelegramLongPollingBot {
         if (responseForUser.getSendMessage() != null) {
             List<SendMessage> sendMessage;
             if(responseForUser.getSendMessage().getText().length() > 4096){
-                sendMessage = MessageSender.splitMessage(List.of(responseForUser.getSendMessage()));
+                sendMessage = MessageSenderUtil.splitMessage(List.of(responseForUser.getSendMessage()));
             }else{
                 sendMessage = List.of(responseForUser.getSendMessage());
             }

@@ -55,29 +55,6 @@ public class ButtonHandler {
                 return null;
         }
     }
-//
-//    private SendMessage helloCommand(Update update){
-//        log.info("HandleButton helloCommand");
-//        SendMessage sendMessage = new SendMessage();
-//        String replyMessage = "Привет! " + update.getCallbackQuery().getFrom().getUserName();
-//        long chatId = update.getCallbackQuery().getMessage().getChatId();
-//        sendMessage.setChatId(String.valueOf(chatId));
-//        sendMessage.setText(replyMessage);
-//        return sendMessage;
-//    }
-//
-//
-//    private SendMessage helpCommand(Update update){
-//        log.info("HandleButton helpCommand");
-//        SendMessage sendMessage = new SendMessage();
-//        String replyMessage = "Уважаемый " + update.getCallbackQuery().getFrom().getUserName()
-//                + "! Скоро вам помогут, ожидайте :) ";
-//        long chatId = update.getCallbackQuery().getMessage().getChatId();
-//        sendMessage.setChatId(String.valueOf(chatId));
-//        sendMessage.setText(replyMessage);
-//        return sendMessage;
-//    }
-//
 
     /**
      * Кнопка выбора блока форума, на которую пользователь хочет оставить отзыв.

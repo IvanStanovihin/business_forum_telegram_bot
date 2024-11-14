@@ -1,60 +1,204 @@
 
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (100, '10:00', '14:00', 'Бизнес-ярмарка «Путь предпринимателя»
-Возможность проконсультироваться с экспертами в формате живого диалога и заполнить чек-лист бизнес-идеи:\nСтанции:\n - Маркетинг - QWER\n - Кадры – Иркутский филиал ОГКУ КЦ Иркутской области\n - Финансы - ФНС\n - Стратегия развития бизнеса - Центр «Мой Бизнес»\n - Инвестиционная поддержка - Сбербанк России', 'Холл ИРНИТУ');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (101, '10:00', '11:00', 'Приветственный кофе-брейк и интерактивы для участников\nВнимание! Первым 30-ти участникам печенье с предсказаниями бесплатно.', 'Холл актового зала ИрНИТУ');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (102, '11:00', '11:10', 'Официальное открытие. Ведущий – Александр Егоров, ведущий Love Radio, участник команды КВН Сборная Иркутской области', 'Актовый зал');
+Возможность проконсультироваться с
+экспертами в формате живого диалога
+и заполнить чек-лист бизнес-идеи:
+Станции:
+    - Маркетинг (QWER)
+    - Кадры (Иркутский филиал
+ОГКУ КЦ Иркутской области)
+    - Финансы - (ФНС)
+    - Стратегия развития бизнеса
+(Центр «Мой Бизнес»)
+    - Инвестиционная поддержка
+(Сбербанк России)', 'Холл ИРНИТУ');
+
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (101, '10:00', '11:00', 'Приветственный кофе-брейк и
+интерактивы для участников
+
+Внимание! Первым 30-ти участникам печенье с
+предсказаниями бесплатно.', 'Холл актового зала ИрНИТУ');
+
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (102, '11:00', '11:10', 'Официальное открытие.
+Ведущий – Александр Егоров,
+ведущий Love Radio, участник команды КВН
+Сборная Иркутской области', 'Актовый зал');
+
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (103, '11:10', '12:00', 'Предпринимательский Баттл «Немного полемики»
-                                                                                                                   Вместе с предпринимателями будем рассуждать на следующие темы:
-                                                                                                                   Инновационный бизнес или традиционный?
-                                                                                                                   Преимущества и недостатки предпринимательства? А нужно ли начинать?
-                                                                                                                   Что лучше? Государственные или частные инвестиции ?
-                                                                                                                   Модераторы:
-                                                                                                                   Мироманов Дмитрий - выпустил 2 путеводителя, 2 комикса, 2 книги про Иркутск и Байкал. Спикер федерального образовательного форума «Движение вверх». Соорганизатор одного из самых крупных городских праздников «День мыльных пузырей». Проект «Бабрбук» попал в шорт-лист премии «Серебряный лучник - Сибирь». Единственный в Иркутске аккредитованный крауд-продюсер.
-                                                                                                                   Чарчиди Ян Вадимович - технологический предприниматель, руководитель КБ «Техэстет»,
-                                                                                                                   проектирование и производство изделий для 4-х отраслей.
-                                                                                                                   Анна и Александр Болдыревы - Основатели свадебного салона Annet, организаторы свадеб
-                                                                                                                   Паршин Александр Вадимович - кандидат геолого-минералогических наук, профессор ИрНИТУ
-                                                                                                                   Жувак Владимир - руководитель ООО «Медтехсервис»', 'Актовый зал');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (104, '12:00', '13:00', 'Мотивационное выступление спикера: «Технологическое предпринимательство в России 2023: как оно поддерживается государством и почему именно сейчас так активно развивается? Перспективные направления для развития»\nСпикер:\nМарк Туровецкий - 23-летний основатель платформы по заказу съемки с дронов PilotHUB и компании PWRBOARD, разработчика модульной универсальной зарядки для любых устройств, — номинант в категории «Предприниматели» рейтинга Forbes «30 до 30» 2022 года', 'Актовый зал');
+Вместе с предпринимателями будем
+рассуждать на следующие темы:
+ - Инновационный бизнес или традиционный?
+ - Преимущества и недостатки предпринимательства?
+ - А нужно ли начинать?
+ - Что лучше? Государственные или
+частные инвестиции ?
+
+Модераторы:
+Мироманов Дмитрий - выпустил 2 путеводителя,
+2 комикса,
+2 книги про Иркутск и Байкал.
+Спикер федерального образовательного
+форума «Движение вверх».
+Соорганизатор одного из самых крупных городских
+праздников «День мыльных пузырей».
+Проект «Бабрбук» попал в шорт-лист
+премии «Серебряный лучник - Сибирь».
+Единственный в Иркутске аккредитованный
+крауд-продюсер.
+
+Марк Туровецкий – 26-летний основатель
+платформы по заказу съёмки с дронов PilotHUB
+и компании PWRBOARD, разработчика модульной
+универсальной зарядки для любых устройств,
+номинат в категории «Предприниматели» рейтинга
+Forbes «30 до 30» года.
+
+Чарчиди Ян Вадимович - технологический предприниматель,
+руководитель КБ «Техэстет»,
+проектирование и производство изделий для 4-х отраслей.
+
+Анна и Александр Болдыревы - Основатели свадебного
+салона Annet, организаторы свадеб
+
+Паршин Александр Вадимович - кандидат
+геолого-минералогических наук,
+профессор ИрНИТУ
+
+Жувак Владимир - руководитель ООО «Медтехсервис»', 'Актовый зал');
+
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (104, '12:00', '13:00', 'Выступление спикера:
+От списка на отчисление до
+списка Forbes 30/30 (основано на реальных событиях)
+
+Спикер: Марк Туровецкий – 26-летний основатель
+платформы по заказу съёмки с дронов PilotHUB
+и компании PWRBOARD, разработчика модульной
+универсальной зарядки для любых устройств,
+номинат в категории «Предприниматели» рейтинга
+Forbes «30 до 30» года.', 'Актовый зал');
+
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (105, '13:00', '14:00', 'Консультации с менторами-предпринимателями
-                                                                                                                   Менторы:
-                                                                                                                   Ян Чарчиди – технологический предприниматель, руководитель КБ «Техэстет», проектирование и производство изделий для 4-х отраслей
-                                                                                                                   Анна и Александр Болдыревы – основатели свадебного салона Annet, организаторы свадеб
-                                                                                                                   Леонид Захаревич - владелец технологического стартапа "Юни"', 'Белый зал');
+Менторы:
+Ян Чарчиди – технологический предприниматель,
+руководитель КБ «Техэстет», проектирование и
+производство изделий для 4-х отраслей
+
+Анна и Александр Болдыревы – основатели свадебного
+салона Annet, организаторы свадеб
+
+Леонид Захаревич - владелец технологического
+стартапа "Юни"
+
+Рыбин Михаил - совладелец агентства креативного
+интернет-маркетинга QWER,
+профессионал в сфере диджитала', 'Белый зал');
+
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (106, '13:00', '14:00', 'Обед
-                                                                                                                   Интерактивы
-                                                                                                                   1. Угадай, как ?
-                                                                                                                   Знаете ли вы о достижениях наших технологических предпринимателей. А сможете догадаться , что за штука там торчит и к чему относится? Проверьте свои интеллектуальные способности в этой игре!
-                                                                                                                   2. Простая экономика
-                                                                                                                   Попробуйте себя в роли предпринимателя, который пытается разложить свою жизнь по полочкам. Достигните консенсуса в своей жизни и уравняйте чаши весов.
-                                                                                                                   3. Кусающийся бренд.
-                                                                                                                   Вы когда-нибудь совали пальцы в розетку, а руки в коробку? Хотите потрогать неизведанное или останетесь в стороне, чтобы не испачкать ручки?', 'Холл актового зала');
+Интерактивы
+1. Угадай, как ?
+Знаете ли вы о достижениях наших
+технологических предпринимателей.
+А сможете догадаться, что за штука там торчит
+и к чему относится?
+Проверьте свои интеллектуальные
+способности в этой игре!
+
+2. Простая экономика
+Попробуйте себя в роли предпринимателя,
+который пытается разложить свою жизнь по полочкам.
+Достигните консенсуса в своей жизни и
+уравняйте чаши весов.
+
+3. Кусающийся бренд.
+Вы когда-нибудь совали пальцы в розетку,
+а руки в коробку? Хотите потрогать неизведанное
+или останетесь в стороне,
+чтобы не испачкать ручки?', 'Холл актового зала');
+
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (107, '14:00', '14:15', 'Нетворкинг-сессия
-                                                                                                                   Ведущий – Александр Егоров, ведущий Love Radio, участник команды КВН Сборная Иркутской области', 'Актовый зал');
+Ведущий – Александр Егоров, ведущий Love Radio,
+участник команды КВН Сборная Иркутской области', 'Актовый зал');
+
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (108, '14:15', '15:00', 'Лекция партнера
-                                                                                                                   «Клуб молодых предпринимателей»
-                                                                                                                   основные инструменты маркетинга', 'Актовый зал – для всех желающих');
+«Клуб молодых предпринимателей»
+основные инструменты маркетинга', 'Актовый зал – для всех желающих');
+
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (109, '14:15', '15:00', 'Лекция-практикум
-                                                                                                                   Ораторское мастерство - «Soft Skills» для руководителя: как студентам прокачать навык в общении?»
-                                                                                                                   Спикер: Владислав Липатов, Член Молодёжного Правительства Иркутской области, Преподаватель ораторского искусства в школе «Говори, говорю!»', 'Белый зал – для участников с проектами');
-INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (110, '15:00', '15:30', 'Лекция от партнера - Центр «Мой бизнес» «О мерах поддержки предпринимательства в регионе»', 'Белый зал');
+Ораторское мастерство - «Soft Skills» для руководителя:
+как студентам прокачать навык в общении?»
+Спикер: Владислав Липатов,
+Член Молодёжного Правительства Иркутской области,
+Преподаватель ораторского искусства
+в школе «Говори, говорю!»', 'Белый зал – для участников с проектами');
+
+INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (110, '15:00', '15:30', 'Лекция от партнера - Центр «Мой бизнес»
+«О мерах поддержки предпринимательства в регионе»', 'Актовый зал');
+
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (111, '15:30', '16:00', 'Официальное закрытие
-                                                                                                                   Объявление результатов зрительского голосования за проекты «PROПредпринимательство»
-                                                                                                                   Объявление результатов конкурса репоста в соц.сетях
-                                                                                                                   Подведение итогов форума', 'Актовый зал');
+Объявление результатов зрительского
+голосования за проекты «PROПредпринимательство»
+Объявление результатов конкурса репоста в соц.сетях
+Подведение итогов форума', 'Актовый зал');
 
+INSERT INTO business_experts(id, name, description) VALUES(100, 'Ян Чарчиди', 'технологический предприниматель, руководитель КБ «Техэстет», проектирование и производство изделий для 4-х отраслей');
+INSERT INTO business_experts(id, name, description) VALUES(101, 'Анна и Александр Болдыревы ', 'основатели свадебного салона Annet, организаторы свадеб');
+INSERT INTO business_experts(id, name, description) VALUES(102, 'Леонид Захаревич', 'владелец технологического стартапа "Юни"');
+INSERT INTO business_experts(id, name, description) VALUES(103, 'Марк Туровецкий', 'основатель платформы по заказу съёмки с дронов PilotHUB и компании PWRBOARD, разработчика модульной универсальной зарядки для любых устройств, номинат в категории «Предприниматели» рейтинга Forbes «30 до 30» года');
+INSERT INTO business_experts(id, name, description) VALUES(104, 'Рыбин Михаил', 'совладелец агентства креативного интернет-маркетинга QWER, профессионал в сфере диджитала');
+INSERT INTO business_experts(id, name, description) VALUES(105, 'Артем Шестаков', 'координатор стартап-студии ИРНИТУ');
 
-INSERT INTO business_experts(id, name, description) VALUES('100', 'Ян Чарчиди', 'технологический предприниматель, руководитель КБ «Техэстет», проектирование и производство изделий для 4-х отраслей');
-INSERT INTO business_experts(id, name, description) VALUES('101', 'Анна и Александр Болдыревы ', 'основатели свадебного салона Annet, организаторы свадеб');
-INSERT INTO business_experts(id, name, description) VALUES('102', 'Леонид Захаревич', 'владелец технологического стартапа "Юни"');
-INSERT INTO business_experts(id, name, description) VALUES('103', 'Марк Туровецкий ', 'основатель платформы по заказу съёмки с дронов PilotHUB и компании PWRBOARD, разработчика модульной универсальной зарядки для любых устройств, номинат в категории «Предприниматели» рейтинга Forbes «30 до 30» года');
+INSERT INTO education_blocks(id, name) VALUES (100, 'Общая организация мероприятия');
+INSERT INTO education_blocks(id, name) VALUES (101, 'Предпринимательский батл ');
+INSERT INTO education_blocks(id, name) VALUES (102, 'Консультации с менторами');
+INSERT INTO education_blocks(id, name) VALUES (103, 'Бизнес - ярмарка');
+INSERT INTO education_blocks(id, name) VALUES (104, 'Нетворкинг');
+INSERT INTO education_blocks(id, name) VALUES (105, 'Лекция по ораторскому мастерству');
+INSERT INTO education_blocks(id, name) VALUES (106, 'Лекция партнера «Клуб молодых предпринимателей»');
+INSERT INTO education_blocks(id, name) VALUES (107, 'Лекция партнера «Центр мой бизнес»');
 
-INSERT INTO education_blocks(id, name) VALUES ('100', 'Общая организация мероприятия');
-INSERT INTO education_blocks(id, name) VALUES ('101', 'Предпринимательский батл ');
-INSERT INTO education_blocks(id, name) VALUES ('102', 'Консультации с менторами');
-INSERT INTO education_blocks(id, name) VALUES ('103', 'Бизнес - ярмарка');
-INSERT INTO education_blocks(id, name) VALUES ('104', 'Нетворкинг');
-INSERT INTO education_blocks(id, name) VALUES ('105', 'Лекция по ораторскому мастерству');
-INSERT INTO education_blocks(id, name) VALUES ('106', 'Лекция партнера «Клуб молодых предпринимателей»');
-INSERT INTO education_blocks(id, name) VALUES ('107', 'Лекция партнера «Центр мой бизнес»');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES (100, 'Тимофей Кузнецов', 'timacckerrr');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES (101, 'Антон Дорожкин', 'mrxtc');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES (102, 'Арина Сенотрусова', 'al17s7');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES (103, 'Щербина Семен', 'istise');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES (104, 'Илья Ярощук', 'IlyaYarush');
+INSERT INTO users(id, registration_information, telegram_user_name) VALUES (105, 'Колосов Вячеслав', 'slavikir');
+
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(101, '2022-10-01T13:00:00', '2022-10-01T13:10:00', 100, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(102, '2022-10-01T13:10:00', '2022-10-01T13:20:00', 100, 101);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(103, '2022-10-01T13:20:00', '2022-10-01T13:30:00', 100, 102);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(104, '2022-10-01T13:30:00', '2022-10-01T13:40:00', 100, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(204, '2022-10-01T13:40:00', '2022-10-01T13:50:00', 100, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(304, '2022-10-01T13:50:00', '2022-10-01T14:00:00', 100, null);
+
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(106, '2022-10-01T13:00:00', '2022-10-01T13:10:00', 101, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(107, '2022-10-01T13:10:00', '2022-10-01T13:20:00', 101, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(108, '2022-10-01T13:20:00', '2022-10-01T13:30:00', 101, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(109, '2022-10-01T13:30:00', '2022-10-01T13:40:00', 101, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(110, '2022-10-01T13:40:00', '2022-10-01T13:50:00', 101, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(111, '2022-10-01T13:50:00', '2022-10-01T14:00:00', 101, null);
+
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(112, '2022-10-01T13:00:00', '2022-10-01T13:10:00', 102, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(113, '2022-10-01T13:10:00', '2022-10-01T13:20:00', 102, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(114, '2022-10-01T13:20:00', '2022-10-01T13:30:00', 102, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(115, '2022-10-01T13:30:00', '2022-10-01T13:40:00', 102, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(116, '2022-10-01T13:40:00', '2022-10-01T13:50:00', 102, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(117, '2022-10-01T13:50:00', '2022-10-01T14:00:00', 102, null);
+
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(118, '2022-10-01T13:30:00', '2022-10-01T13:40:00', 103, 104);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(119, '2022-10-01T13:40:00', '2022-10-01T13:50:00', 103, 105);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(120, '2022-10-01T13:50:00', '2022-10-01T14:00:00', 103, 103);
+
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(121, '2022-10-01T13:00:00', '2022-10-01T13:10:00', 104, 100);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(122, '2022-10-01T13:10:00', '2022-10-01T13:20:00', 104, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(123, '2022-10-01T13:20:00', '2022-10-01T13:30:00', 104, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(124, '2022-10-01T13:30:00', '2022-10-01T13:40:00', 104, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(125, '2022-10-01T13:40:00', '2022-10-01T13:50:00', 104, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(126, '2022-10-01T13:50:00', '2022-10-01T14:00:00', 104, null);
+
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(127, '2022-10-01T13:00:00', '2022-10-01T13:10:00', 105, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(128, '2022-10-01T13:10:00', '2022-10-01T13:20:00', 105, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(129, '2022-10-01T13:20:00', '2022-10-01T13:30:00', 105, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(130, '2022-10-01T13:30:00', '2022-10-01T13:40:00', 105, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(131, '2022-10-01T13:40:00', '2022-10-01T13:50:00', 105, null);
+INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(132, '2022-10-01T13:50:00', '2022-10-01T14:00:00', 105, null);
 
