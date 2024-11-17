@@ -38,10 +38,46 @@ public class TextHandler {
                 return registrationText(update);
             case WAIT_FEEDBACK:
                 return feedbackText(update, botState);
+            case WAIT_PHRASE:
+                return phraseText(update);
+            case WAIT_WORD:
+                return wordText(update);
+
             default:
                 log.error("Unrecognized user text {}", update.getMessage().getText());
         }
         return null;
+    }
+
+    /**
+     * Метод для обработки текста, который пользователь ввёл при отгадывании фразы
+     */
+    private ResponseForUser phraseText(Update update) {
+        SendMessage sendMessage = new SendMessage();
+        Long chatId = update.getMessage().getChatId();
+        sendMessage.setChatId(String.valueOf(chatId));
+
+        //TODO дергать ручку с проверкой введеной фразы (должна возвращать true/fasle),
+        // также нужно учесть что если фразу уже отгадали до этого нужно вывести сообщение об этом
+        // также нужно учесть что пользователь может несколько раз подряд фразу (несколько сообщений подряд)
+        sendMessage.setText("Вы ввели фразу");
+
+        return new ResponseForUser(sendMessage);
+    }
+
+    /**
+     * Метод для обработки текста, который пользователь ввёл при вводе слов из фразы
+     */
+    private ResponseForUser wordText(Update update) {
+        SendMessage sendMessage = new SendMessage();
+        Long chatId = update.getMessage().getChatId();
+        sendMessage.setChatId(String.valueOf(chatId));
+
+        //TODO дергать ручку с проверкой введеного слова (должна возвращать true/fasle)
+        //также нужно учесть что пользователь может несколько раз подряд фразу (несколько сообщений подряд)
+        sendMessage.setText("Вы ввели слово");
+
+        return new ResponseForUser(sendMessage);
     }
 
     /**

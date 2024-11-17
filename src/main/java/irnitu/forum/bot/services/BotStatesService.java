@@ -61,6 +61,32 @@ public class BotStatesService {
         botStateRepository.save(botState);
     }
 
+    /**
+     * Выставление стейта на ожидание ввода слова (часть конкурса "Угадай фразу")
+     */
+    public void setWordState(String userTelegramName){
+        BotState botState = botStateRepository.findByUserTelegramName(userTelegramName);
+        if (botState == null) {
+            botState = new BotState()
+                    .setUserTelegramName(userTelegramName);
+        }
+        botState.setState(BotStateNames.WAIT_WORD);
+        botStateRepository.save(botState);
+    }
+
+    /**
+     * Выставление стейта на ожидание ввода фразы (часть конкурса "Угадай фразу")
+     */
+    public void setPhraseState(String userTelegramName){
+        BotState botState = botStateRepository.findByUserTelegramName(userTelegramName);
+        if (botState == null) {
+            botState = new BotState()
+                    .setUserTelegramName(userTelegramName);
+        }
+        botState.setState(BotStateNames.WAIT_PHRASE);
+        botStateRepository.save(botState);
+    }
+
 
     /**
      * Очистка состояния бота для конкретного пользователя.
