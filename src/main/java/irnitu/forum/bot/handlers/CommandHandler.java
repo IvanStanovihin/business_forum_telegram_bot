@@ -3,15 +3,7 @@ package irnitu.forum.bot.handlers;
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.models.common.ResponseForUser;
-import irnitu.forum.bot.services.ConsultationTimeSlotService;
-import irnitu.forum.bot.services.FeedbackService;
-import irnitu.forum.bot.services.ForumScheduleService;
-import irnitu.forum.bot.services.UserService;
-import irnitu.forum.bot.services.BotStatesService;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
+import irnitu.forum.bot.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
@@ -19,6 +11,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import static irnitu.forum.bot.constants.UserCommands.*;
 
 @Slf4j
@@ -32,7 +29,7 @@ public class CommandHandler {
     private final FeedbackService feedbackService;
     private final ConsultationTimeSlotService consultationTimeSlotService;
 
-    private List<String> whiteList = Arrays.asList("slavikir", "IvanStanovihin", "irinachelpanova", "VikaRinchinova", "elenagoncharova18");
+    private List<String> whiteList = Arrays.asList("slavikir", "IvanStanovihin", "rocknrollalalala", "VikaRinchinova", "elenagoncharova18");
 
     public CommandHandler(Keyboards keyboards,
                           UserService userService,
@@ -68,6 +65,8 @@ public class CommandHandler {
                 return feedbackCommand(update);
             case UserCommands.USER_CONSULTATIONS:
                 return consultationsCommand(update);
+            case UserCommands.CONTEST:
+                return contest(update);
             case UserCommands.CONSULTATIONS_SCHEDULE:
                 if (whiteList.contains(user)) {
                     return consultationsScheduleCommand(update);
@@ -80,10 +79,42 @@ public class CommandHandler {
                 }
                 log.error("ALL_FEEDBACKS whitelist error!");
                 return null;
+            case SEE_THE_WINNER:
+                if (whiteList.contains(user)) {
+                    return seeWinner(update);
+                }
+                log.error("SEE_THE_WINNER whitelist error!");
+                return null;
+            case ACTIVATE_PHRASE_ENTRY:
+                if (whiteList.contains(user)) {
+                    return activatePhraseEntry(update);
+                }
+                log.error("ACTIVATE_PHRASE_ENTRY whitelist error!");
+                return null;
             default:
                 log.error("Unexpected command entered!");
                 return null;
         }
+    }
+
+    /**
+     * Обработка нажатия организатором кнопки "Активировать ввод фразы"
+     */
+    private ResponseForUser activatePhraseEntry(Update update) {
+
+        //TODO добавить обработку нажатия
+        //Нужно дергать ручку на бэке которая активирует отгадывание фразы
+        return null;
+    }
+
+    /**
+     * Обработка нажатия организатором кнопки "Посмотреть победителя конкурса"
+     */
+    private ResponseForUser seeWinner(Update update) {
+
+        //TODO добавить обработку нажатия
+        //Нужно дергать ручку с бэка которая либо возвразает тг ник поюедителя, либо null если никто не угдал еще
+        return null;
     }
 
     /**
@@ -130,7 +161,6 @@ public class CommandHandler {
         return new ResponseForUser(sendMessage);
     }
 
-
     /**
      * Метод для обработки кнопки "мои консультации".
      */
@@ -166,6 +196,21 @@ public class CommandHandler {
         return new ResponseForUser(sendMessage);
     }
 
+    /**
+     * Метод для обработки нажатия на "Конкурс"
+     * @param update
+     * @return
+     */
+    private ResponseForUser contest(Update update) {
+        InlineKeyboardMarkup contestBlocksMarkup = keyboards.contestBlockKeyboard();
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText("Выберите что вы хотите ввести:");
+        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setReplyMarkup(contestBlocksMarkup);
+        return new ResponseForUser(sendMessage);
+    }
+
     private ResponseForUser helpCommand(Update update) {
         long chatId = update.getMessage().getChatId();
         String user = update.getMessage().getFrom().getUserName();
@@ -177,22 +222,29 @@ public class CommandHandler {
                         "\n<b>3.</b> Записаться на консультацию к экспертам-предпринимателям г. Иркутска - %s" +
                         "\n" +
                         "\n<b>4.</b> Посмотреть рассписание консультаций на которые Вы записались - %s" +
+                        "\n" +
+                        "\n<b>5.</b> Участвовать в конкурсе - «Угадай фразу» - %s" +
                         "\n\n Если возникнут какие-либо вопросы по работе бота, то "
                         + "обращайтесь к: \nhttps://t.me/IvanStanovihin  \nhttps://t.me/slavikir",
                 FORUM_SCHEDULE,
                 ADD_FEEDBACK,
                 ADD_CONSULTATION,
-                USER_CONSULTATIONS
+                USER_CONSULTATIONS,
+                CONTEST
         );
 
         StringBuilder message = new StringBuilder(mainMessage);
 
-        if(whiteList.contains(user)) {
+        if (whiteList.contains(user)) {
             String extraMessage = String.format("\n\nКоманды для организаторов: \n" +
                             "<b>1.</b> Посмотреть общее расписание консультаций - %s \n" +
-                            "<b>2.</b> Посмотреть отзывы участников - %s",
+                            "<b>2.</b> Посмотреть отзывы участников - %s \n" +
+                            "<b>3.</b> Посмотреть победителя конкурса - %s \n" +
+                            "<b>4.</b> Активировать ввод фразы - %s \n",
                     CONSULTATIONS_SCHEDULE,
-                    ALL_FEEDBACKS
+                    ALL_FEEDBACKS,
+                    SEE_THE_WINNER,
+                    ACTIVATE_PHRASE_ENTRY
             );
             message.append(extraMessage);
         }
@@ -218,12 +270,15 @@ public class CommandHandler {
                         "\n" +
                         "\n<b>4.</b> Посмотреть расписание консультаций на которые Вы записались - %s" +
                         "\n" +
+                        "\n<b>5.</b> Участвовать в конкурсе - «Угадай фразу» - %s\"\n" +
                         "\nДля получения информации по функциям Бота используйте - %s",
                 FORUM_SCHEDULE,
                 ADD_FEEDBACK,
                 ADD_CONSULTATION,
                 USER_CONSULTATIONS,
+                CONTEST,
                 HELP
+                //TODO добавить команды для оргов
         );
 
         SendMessage sendMessage = new SendMessage();

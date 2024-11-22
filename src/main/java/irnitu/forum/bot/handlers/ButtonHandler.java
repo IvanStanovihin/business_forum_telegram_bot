@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 /**
  * Главный класс для обработки нажатий на кнопки
@@ -50,10 +49,42 @@ public class ButtonHandler {
                 return timeslotButton(update);
             case UserCommands.FEEDBACK_EDUCATION_BLOCK:
                 return educationBlockButton(update);
+            case UserCommands.CONTEST_GUESS_WORD:
+                return contestGuessWordButton(update);
+            case UserCommands.CONTEST_GUESS_PHRASE:
+                return contestGuessPhraseButton(update);
             default:
                 log.error("Unexpected button pressed!");
                 return null;
         }
+    }
+
+    /**
+     * Кнопка "Введите слово" (часть конкурса "Угадай фразу")
+     */
+    private ResponseForUser contestGuessWordButton(Update update) {
+        String userTelegramName = update.getCallbackQuery().getFrom().getUserName();
+        long chatId = update.getCallbackQuery().getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setText("Введите слово");
+        sendMessage.setChatId(String.valueOf(chatId));
+        botStatesService.setWordState(userTelegramName);
+        return new ResponseForUser(sendMessage);
+    }
+
+    /**
+     * Кнопка "Введите фразу" (часть конкурса "Угадай фразу")
+     */
+    private ResponseForUser contestGuessPhraseButton(Update update) {
+        String userTelegramName = update.getCallbackQuery().getFrom().getUserName();
+        long chatId = update.getCallbackQuery().getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        //TODO нужно учесть что если еще не ввели все слова то нужно выводить сообщение "отгадывание фразы не возможно"
+        // (можно сделать ручку на проверку статуса конкусра)
+        sendMessage.setText("Введите фразу");
+        sendMessage.setChatId(String.valueOf(chatId));
+        botStatesService.setPhraseState(userTelegramName);
+        return new ResponseForUser(sendMessage);
     }
 
     /**

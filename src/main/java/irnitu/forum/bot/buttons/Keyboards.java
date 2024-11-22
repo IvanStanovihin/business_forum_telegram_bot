@@ -39,21 +39,6 @@ public class Keyboards {
         return button;
     }
 
-//    public InlineKeyboardMarkup mainKeyboard() {
-//        Buttons.HELP_BUTTON.setCallbackData(UserCommands.HELP);
-//        Buttons.SCHEDULE_BUTTON.setCallbackData(UserCommands.SCHEDULE);
-//
-//        List<InlineKeyboardButton> rowInline1 = List.of(Buttons.HELLO_BUTTON);
-//        List<InlineKeyboardButton> rowInline2 = List.of(Buttons.HELP_BUTTON);
-//        List<InlineKeyboardButton> rowInline3 = List.of(Buttons.SCHEDULE_BUTTON);
-//        List<List<InlineKeyboardButton>> rowsInLine = List.of(rowInline1, rowInline2, rowInline3);
-//
-//        InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-//        markupInline.setKeyboard(rowsInLine);
-//
-//        return markupInline;
-//    }
-
     /**
      * Клавиатура со списком экспертов доступных для записи на консультацию
      * @return клавиатуру, которая состоит из списка экспертов
@@ -125,6 +110,19 @@ public class Keyboards {
             InlineKeyboardButton educationBlockButton = createButton(buttonCallback, buttonText);
             rowsInLine.add(List.of(educationBlockButton));
         }
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        markup.setKeyboard(rowsInLine);
+        return markup;
+    }
+
+    /**
+     * Метод для создания списка кнопок, для конкурса "отгадай фразу"
+     */
+    public InlineKeyboardMarkup contestBlockKeyboard() {
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        InlineKeyboardButton wordButton = createButton(UserCommands.CONTEST_GUESS_WORD, "Отгадать слово");
+        InlineKeyboardButton phraseButton = createButton(UserCommands.CONTEST_GUESS_PHRASE, "Отгадать фразу");
+        rowsInLine.add(List.of(wordButton, phraseButton));
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         markup.setKeyboard(rowsInLine);
         return markup;

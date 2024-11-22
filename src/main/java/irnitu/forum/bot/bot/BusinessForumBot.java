@@ -9,20 +9,16 @@ import irnitu.forum.bot.menu.BotMenu;
 import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.services.UserService;
 import irnitu.forum.bot.utils.MessageSenderUtil;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChat.BotCommandScopeChatBuilder;
-import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeChatMember;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * Главный класс обработчик команд из телеграмма

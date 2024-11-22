@@ -2,11 +2,10 @@ package irnitu.forum.bot.services;
 
 import irnitu.forum.bot.models.entities.ForumSchedule;
 import irnitu.forum.bot.repositories.ForumScheduleRepository;
-
-import java.util.List;
-
 import lombok.Data;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Data
 @Service
@@ -24,7 +23,7 @@ public class ForumScheduleService {
      */
     public String getForumScheduleMessage() {
         List<ForumSchedule> forumScheduleEvents = forumScheduleRepository.findAllSortedByStartTime();
-        StringBuilder schedule = new StringBuilder("<b>Программа мероприятий форума на 30.11:</b>");
+        StringBuilder schedule = new StringBuilder("<b>Программа мероприятий форума на 28.11:</b>");
         for (ForumSchedule event : forumScheduleEvents) {
             String eventInfo = "\n<b>Время</b> \n" +
                     event.getStartDateTime() +
