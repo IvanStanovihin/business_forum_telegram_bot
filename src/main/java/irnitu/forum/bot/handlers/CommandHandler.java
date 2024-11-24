@@ -3,6 +3,7 @@ package irnitu.forum.bot.handlers;
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.models.common.ResponseForUser;
+import irnitu.forum.bot.models.entities.ContestWinner;
 import irnitu.forum.bot.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class CommandHandler {
     private final FeedbackService feedbackService;
     private final ConsultationTimeSlotService consultationTimeSlotService;
 
+    private final ContestWinnerService contestWinnerService;
+
     private List<String> whiteList = Arrays.asList("slavikir", "IvanStanovihin", "rocknrollalalala", "VikaRinchinova", "elenagoncharova18");
 
     public CommandHandler(Keyboards keyboards,
@@ -36,13 +39,15 @@ public class CommandHandler {
                           FeedbackService feedbackService,
                           BotStatesService botStatesService,
                           ForumScheduleService forumScheduleService,
-                          ConsultationTimeSlotService consultationTimeSlotService) {
+                          ConsultationTimeSlotService consultationTimeSlotService,
+                          ContestWinnerService contestWinnerService) {
         this.keyboards = keyboards;
         this.userService = userService;
         this.feedbackService = feedbackService;
         this.botStatesService = botStatesService;
         this.forumScheduleService = forumScheduleService;
         this.consultationTimeSlotService = consultationTimeSlotService;
+        this.contestWinnerService = contestWinnerService;
     }
 
     public ResponseForUser handleCommand(Update update) {
@@ -111,10 +116,19 @@ public class CommandHandler {
      * Обработка нажатия организатором кнопки "Посмотреть победителя конкурса"
      */
     private ResponseForUser seeWinner(Update update) {
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
 
-        //TODO добавить обработку нажатия
-        //Нужно дергать ручку с бэка которая либо возвразает тг ник поюедителя, либо null если никто не угдал еще
-        return null;
+        ContestWinner winner = contestWinnerService.getWinner();
+
+        if (winner.getIsWinnerSet()) {
+            sendMessage.setText(winner.getStudent().getChatId());
+        } else {
+            sendMessage.setText("еще никто не удагал фразу");
+        }
+
+        return new ResponseForUser(sendMessage);
     }
 
     /**

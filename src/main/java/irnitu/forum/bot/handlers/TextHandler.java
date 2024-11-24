@@ -3,6 +3,7 @@ package irnitu.forum.bot.handlers;
 import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.models.entities.BotState;
 import irnitu.forum.bot.services.BotStatesService;
+import irnitu.forum.bot.services.ContestService;
 import irnitu.forum.bot.services.FeedbackService;
 import irnitu.forum.bot.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,12 +22,16 @@ public class TextHandler {
     private final UserService userService;
     private final FeedbackService feedbackService;
 
+    private final ContestService contestService;
+
     public TextHandler(BotStatesService botStatesService,
                        UserService userService,
-                       FeedbackService feedbackService) {
+                       FeedbackService feedbackService,
+                       ContestService contestService) {
         this.botStatesService = botStatesService;
         this.userService = userService;
         this.feedbackService = feedbackService;
+        this.contestService = contestService;
     }
 
     public ResponseForUser handleText(Update update){
@@ -56,11 +61,20 @@ public class TextHandler {
         SendMessage sendMessage = new SendMessage();
         Long chatId = update.getMessage().getChatId();
         sendMessage.setChatId(String.valueOf(chatId));
+        String inputPhrase = update.getMessage().getText();
 
-        //TODO дергать ручку с проверкой введеной фразы (должна возвращать true/fasle),
+        boolean phraseIsCorrect = contestService.checkPhrase(inputPhrase);
+
+        // TODO дергать ручку с проверкой введеной фразы (должна возвращать true/fasle),
         // также нужно учесть что если фразу уже отгадали до этого нужно вывести сообщение об этом
         // также нужно учесть что пользователь может несколько раз подряд фразу (несколько сообщений подряд)
-        sendMessage.setText("Вы ввели фразу");
+        // TODO формулировка
+        if (phraseIsCorrect) {
+            sendMessage.setText("Вы ввели корректную фразу");
+            //TODO дергать ручку с установкой ника победителя
+        } else {
+            sendMessage.setText("Вы ввели не корректную фразу, попробуйте еще раз");
+        }
 
         return new ResponseForUser(sendMessage);
     }
@@ -73,9 +87,18 @@ public class TextHandler {
         Long chatId = update.getMessage().getChatId();
         sendMessage.setChatId(String.valueOf(chatId));
 
-        //TODO дергать ручку с проверкой введеного слова (должна возвращать true/fasle)
-        //также нужно учесть что пользователь может несколько раз подряд фразу (несколько сообщений подряд)
-        sendMessage.setText("Вы ввели слово");
+        String inputPhrase = update.getMessage().getText();
+
+        boolean wordIsCorrect = contestService.checkWord(inputPhrase);
+
+        if (wordIsCorrect) {
+            //TODO дергать ручку с проверкой введеного слова (должна возвращать true/fasle)
+            //также нужно учесть что пользователь может несколько раз подряд фразу (несколько сообщений подряд)
+            // TODO формулировка
+            sendMessage.setText("Вы ввели слово которое есть в фразе");
+        } else {
+            sendMessage.setText("Этого слова нет в фразе");
+        }
 
         return new ResponseForUser(sendMessage);
     }
