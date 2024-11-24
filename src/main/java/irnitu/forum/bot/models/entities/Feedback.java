@@ -15,6 +15,7 @@ public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(name = "message", length = 2048)
     private String message;
 
     @ManyToOne

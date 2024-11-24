@@ -86,7 +86,7 @@ public class CommandHandler {
                 return null;
             case SEE_THE_WINNER:
                 if (whiteList.contains(user)) {
-                    return seeWinner(update);
+                    return seeWinners(update);
                 }
                 log.error("SEE_THE_WINNER whitelist error!");
                 return null;
@@ -113,21 +113,30 @@ public class CommandHandler {
     }
 
     /**
-     * Обработка нажатия организатором кнопки "Посмотреть победителя конкурса"
+     * Обработка нажатия организатором кнопки "Посмотреть победителя конкурса".
+     * Возвращается список всех участников, которые угадали секретную фразу
      */
-    private ResponseForUser seeWinner(Update update) {
+    private ResponseForUser seeWinners(Update update) {
+        log.info("See winners command");
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
 
-        ContestWinner winner = contestWinnerService.getWinner();
+        List<ContestWinner> winners = contestWinnerService.getWinners();
 
-        if (winner.getIsWinnerSet()) {
-            sendMessage.setText(winner.getStudent().getChatId());
-        } else {
+        if (winners.isEmpty()) {
             sendMessage.setText("еще никто не удагал фразу");
+        } else {
+            StringBuilder result = new StringBuilder();
+            winners.forEach(winner -> {
+                String winnerStr = "Время ввода фразы: " + winner.getPhraseEntryTime()
+                    + " Угадавший: " + winner.getStudent().getTelegramUserName()
+                    + " зарегистрирован как: " + winner.getStudent().getRegistrationInformation()
+                    + " номер телефона: " + winner.getStudent().getPhoneNumber() + "\n";
+                result.append(winnerStr);
+            });
+            sendMessage.setText(result.toString());
         }
-
         return new ResponseForUser(sendMessage);
     }
 
@@ -212,10 +221,11 @@ public class CommandHandler {
 
     /**
      * Метод для обработки нажатия на "Конкурс"
-     * @param update
-     * @return
      */
-    private ResponseForUser contest(Update update) {
+    private ResponseForUser contest(Update update) {       // Проверка регистрации пользователя
+        if (!userService.isRegistered(update)) {
+            return new ResponseForUser(userService.registrationError(update));
+        }
         InlineKeyboardMarkup contestBlocksMarkup = keyboards.contestBlockKeyboard();
         long chatId = update.getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();

@@ -5,6 +5,8 @@ import irnitu.forum.bot.models.entities.ContestWinner;
 import irnitu.forum.bot.models.entities.User;
 import irnitu.forum.bot.repositories.ContestWinnerRepository;
 import irnitu.forum.bot.repositories.UserRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -26,28 +28,23 @@ public class ContestWinnerService {
      * @param userTelegramName
      * @param time
      */
-    public void addWinner(String userTelegramName, String time) {
-        User user = userRepository.findByTelegramUserName(userTelegramName);
-        ContestWinner winner = new ContestWinner().setStudent(user).setPhraseEntryTime(time).setIsWinnerSet(true);
+    public void addWinner(Long chatId) {
+        User user = userRepository.findByChatId(chatId.toString());
+        ContestWinner winner = new ContestWinner()
+            .setStudent(user)
+            .setPhraseEntryTime(LocalDateTime.now())
+            .setIsWinnerSet(true);
 
         contestWinnerRepository.save(winner);
     }
 
     /**
      * Метод для получения победителя в конкурсе "Угадай фразу"
-     * @return
+     * @return все участники, которые угадали фразу. Организатор должен сам решить кто точнее
+     * ввёл секретную фразу и был раньше.
      */
-    public ContestWinner getWinner() {
-        //КАК ТУТ БЫТЬ С ID??
-        ContestWinner contestWinner = contestWinnerRepository.findWinner(1l);
-
-        //Если в БД еще нет записи с победителем то вернется null и тогда возвращаем
-        //ContestWinner с IsWinnerSet = false, на UI потом делаем проверку
-        if (contestWinner == null) {
-            contestWinner = new ContestWinner().setIsWinnerSet(false);
-        }
-
-        return contestWinner;
+    public List<ContestWinner> getWinners() {
+        return contestWinnerRepository.findAll();
     }
 
 }

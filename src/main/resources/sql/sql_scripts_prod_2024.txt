@@ -89,5 +89,14 @@ INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultatio
 INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(129, '2022-10-01T14:50:00', '2022-10-01T15:05:00', 105, null);
 INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(130, '2022-10-01T15:05:00', '2022-10-01T15:20:00', 105, null);
 
-INSERT INTO contest(id, phrase) VALUES ('100', 'Технологическое предпринимательство- это вообще особенный вид бизнеса. Такой, как экстремальный вид спорта. Вы знаете о рисках уже на старте и все равно вы на них идете, чтобы реализовать свой проект');
+INSERT INTO contest_secret(id, phrase, is_all_words_found)
+  VALUES ('100', 'Технологическое предпринимательство - это вообще особенный вид бизнеса. Такой, как экстремальный вид спорта. Вы знаете о рисках уже на старте и все равно вы на них идете, чтобы реализовать свой проект', false);
+
+-- Секретные слова храним в максимально упрощённом виде: без знаков припинания и в нижнем регистре. Когда пользователь будет вводить текст, его тоже будем очищать от знаков припинания и приводить к нижнему регистру
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('100', 'технологическое предпринимательство', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('101', 'это вообще особенный вид бизнеса', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('102', 'такой как экстремальный вид спорта', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('103', 'вы знаете о рисках уже на старте и все равно вы на них идете', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('104', 'чтобы реализовать свой проект', false);
+
 

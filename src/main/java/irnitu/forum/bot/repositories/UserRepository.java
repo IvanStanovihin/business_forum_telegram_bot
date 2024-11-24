@@ -8,6 +8,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByTelegramUserName(String userName);
 
+    User findByChatId(String chatId);
+
     @Query(value = "SELECT * FROM users WHERE telegram_user_name = ?1 AND registration_information IS NULL",
      nativeQuery = true)
     User findByUserNameWithNullRegistration(String userName);

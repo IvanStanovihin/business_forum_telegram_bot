@@ -29,21 +29,15 @@ public class BusinessForumBot extends TelegramLongPollingBot {
 
   private final BotConfig botConfig;
   private final ButtonHandler buttonHandler;
-  private final Keyboards keyboards;
-  private final UserService userService;
   private final CommandHandler commandHandler;
   private final TextHandler textHandler;
 
   public BusinessForumBot(BotConfig botConfig,
       ButtonHandler buttonHandler,
-      Keyboards keyboards,
-      UserService userService,
       CommandHandler commandHandler,
       TextHandler textHandler) {
     this.botConfig = botConfig;
     this.buttonHandler = buttonHandler;
-    this.keyboards = keyboards;
-    this.userService = userService;
     this.commandHandler = commandHandler;
     this.textHandler = textHandler;
   }
@@ -115,8 +109,7 @@ public class BusinessForumBot extends TelegramLongPollingBot {
         log.info("Send message == null");
       }
     } catch (TelegramApiException e) {
-      System.err.println("Occurred exception: " + e);
-      e.printStackTrace();
+      log.error("Occurred TelegramApiException ", e);
     }
   }
 }

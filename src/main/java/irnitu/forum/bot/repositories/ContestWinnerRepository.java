@@ -2,6 +2,7 @@ package irnitu.forum.bot.repositories;
 
 import irnitu.forum.bot.models.entities.ContestWinner;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +11,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContestWinnerRepository extends JpaRepository<ContestWinner, Long> {
 
-    ContestWinner findWinner(Long id);
 }

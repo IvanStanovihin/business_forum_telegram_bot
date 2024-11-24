@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Сервис для логики записи на консультацию к экспертам
+ */
 @Slf4j
 @Service
 public class ConsultationTimeSlotService {

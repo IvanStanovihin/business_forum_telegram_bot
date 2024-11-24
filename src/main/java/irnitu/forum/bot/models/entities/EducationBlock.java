@@ -1,5 +1,6 @@
 package irnitu.forum.bot.models.entities;
 
+import javax.persistence.Column;
 import lombok.Data;
 
 
@@ -16,6 +17,7 @@ public class EducationBlock {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
 
+    @Column(name = "name", length = 2048)
+    private String name;
 }
