@@ -89,3 +89,5 @@ INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultatio
 INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(129, '2022-10-01T14:50:00', '2022-10-01T15:05:00', 105, null);
 INSERT INTO consultation_time_slots(id, start_consultation_time, end_consultation_time, expert_id, student_id) VALUES(130, '2022-10-01T15:05:00', '2022-10-01T15:20:00', 105, null);
 
+INSERT INTO contest(id, phrase) VALUES ('100', 'Технологическое предпринимательство- это вообще особенный вид бизнеса. Такой, как экстремальный вид спорта. Вы знаете о рисках уже на старте и все равно вы на них идете, чтобы реализовать свой проект');
+
