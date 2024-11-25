@@ -5,10 +5,11 @@ import irnitu.forum.bot.models.entities.ContestWinner;
 import irnitu.forum.bot.models.entities.User;
 import irnitu.forum.bot.repositories.ContestWinnerRepository;
 import irnitu.forum.bot.repositories.UserRepository;
-import java.time.LocalDateTime;
-import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -46,5 +47,4 @@ public class ContestWinnerService {
     public List<ContestWinner> getWinners() {
         return contestWinnerRepository.findAll();
     }
-
 }

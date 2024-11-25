@@ -81,9 +81,16 @@ public class ButtonHandler {
         SendMessage sendMessage = new SendMessage();
         //TODO нужно учесть что если еще не ввели все слова то нужно выводить сообщение "отгадывание фразы не возможно"
         // (можно сделать ручку на проверку статуса конкусра)
-        sendMessage.setText("Введите фразу");
+        boolean allWordsIsFound = true; //TODO добавить вызов ручки
+
+        if (allWordsIsFound) {
+            sendMessage.setText("Вам нужно угадать фразу состоящую из следующих слов:\n\nреализовать, бизнеса, них, равно, уже, все, экстремальный, особенный, проект, на, вы, рисках, вид, чтобы, о, идете, старте, как, спорта, предпринимательство, знаете, такой, свой, это, технологическое, вообще, и, вид, на, проект");
+            botStatesService.setPhraseState(userTelegramName);
+        } else {
+            sendMessage.setText("Вы не можете отгадывать фразу потому что ввели не все слова");
+        }
         sendMessage.setChatId(String.valueOf(chatId));
-        botStatesService.setPhraseState(userTelegramName);
+
         return new ResponseForUser(sendMessage);
     }
 

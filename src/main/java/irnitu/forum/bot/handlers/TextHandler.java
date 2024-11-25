@@ -3,8 +3,8 @@ package irnitu.forum.bot.handlers;
 import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.models.entities.BotState;
 import irnitu.forum.bot.services.BotStatesService;
-import irnitu.forum.bot.services.SecretPhraseContestService;
 import irnitu.forum.bot.services.FeedbackService;
+import irnitu.forum.bot.services.SecretPhraseContestService;
 import irnitu.forum.bot.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -63,6 +63,7 @@ public class TextHandler {
         Long chatId = update.getMessage().getChatId();
         sendMessage.setChatId(String.valueOf(chatId));
         String inputPhrase = update.getMessage().getText();
+        log.info("phraseText - {}", inputPhrase);
 
         boolean phraseIsCorrect = secretPhraseContestService.checkPhrase(chatId, inputPhrase);
 
