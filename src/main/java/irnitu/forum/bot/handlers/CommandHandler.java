@@ -31,6 +31,7 @@ public class CommandHandler {
     private final ConsultationTimeSlotService consultationTimeSlotService;
 
     private final ContestWinnerService contestWinnerService;
+    private final SecretPhraseContestService secretPhraseContestService;
 
     private List<String> whiteList = Arrays.asList("slavikir", "IvanStanovihin", "rocknrollalalala", "VikaRinchinova", "elenagoncharova18");
 
@@ -40,7 +41,8 @@ public class CommandHandler {
                           BotStatesService botStatesService,
                           ForumScheduleService forumScheduleService,
                           ConsultationTimeSlotService consultationTimeSlotService,
-                          ContestWinnerService contestWinnerService) {
+                          ContestWinnerService contestWinnerService, SecretPhraseContestService secretPhraseContestService
+    ) {
         this.keyboards = keyboards;
         this.userService = userService;
         this.feedbackService = feedbackService;
@@ -48,6 +50,7 @@ public class CommandHandler {
         this.forumScheduleService = forumScheduleService;
         this.consultationTimeSlotService = consultationTimeSlotService;
         this.contestWinnerService = contestWinnerService;
+        this.secretPhraseContestService = secretPhraseContestService;
     }
 
     public ResponseForUser handleCommand(Update update) {
@@ -106,10 +109,14 @@ public class CommandHandler {
      * Обработка нажатия организатором кнопки "Активировать ввод фразы"
      */
     private ResponseForUser activatePhraseEntry(Update update) {
-
-        //TODO добавить обработку нажатия
         //Нужно дергать ручку на бэке которая активирует отгадывание фразы
-        return null;
+        secretPhraseContestService.activatePhrase();
+
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
+        sendMessage.setText("Ввод фразы активирован");
+        return new ResponseForUser(sendMessage);
     }
 
     /**

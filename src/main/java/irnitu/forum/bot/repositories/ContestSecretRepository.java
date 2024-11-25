@@ -2,6 +2,7 @@ package irnitu.forum.bot.repositories;
 
 import irnitu.forum.bot.models.entities.ContestSecret;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,4 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface ContestSecretRepository extends JpaRepository<ContestSecret, Long>  {
 
     ContestSecret findContestById(Long contestId);
+
+    @Query(value = "update contest_secret c set c.is_all_words_found = true where true",
+           nativeQuery = true)
+    void markAllWordsGuessed();
 }

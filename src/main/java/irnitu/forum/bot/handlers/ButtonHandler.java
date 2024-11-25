@@ -5,8 +5,8 @@ import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.services.BotStatesService;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
-import irnitu.forum.bot.services.FeedbackService;
-import irnitu.forum.bot.services.UserService;
+import irnitu.forum.bot.services.SecretPhraseContestService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -17,25 +17,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ButtonHandler {
 
     private final Keyboards keyboards;
     private final ConsultationTimeSlotService consultationTimeSlotService;
     private final BotStatesService botStatesService;
-    private final UserService userService;
-    private final FeedbackService feedbackService;
+    private final SecretPhraseContestService secretPhraseContestService;
 
-    public ButtonHandler(Keyboards keyboards,
-                         ConsultationTimeSlotService consultationTimeSlotService,
-                         BotStatesService botStatesService,
-                         UserService userService,
-                         FeedbackService feedbackService) {
-        this.keyboards = keyboards;
-        this.consultationTimeSlotService = consultationTimeSlotService;
-        this.botStatesService = botStatesService;
-        this.userService = userService;
-        this.feedbackService = feedbackService;
-    }
 
     public ResponseForUser handleButton(Update update){
         log.info("HandleButton ");
@@ -79,9 +68,7 @@ public class ButtonHandler {
         String userTelegramName = update.getCallbackQuery().getFrom().getUserName();
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
-        //TODO нужно учесть что если еще не ввели все слова то нужно выводить сообщение "отгадывание фразы не возможно"
-        // (можно сделать ручку на проверку статуса конкусра)
-        boolean allWordsIsFound = true; //TODO добавить вызов ручки
+        boolean allWordsIsFound = secretPhraseContestService.isAllWordsFound();
 
         if (allWordsIsFound) {
             sendMessage.setText("Вам нужно угадать фразу состоящую из следующих слов:\n\nреализовать, бизнеса, них, равно, уже, все, экстремальный, особенный, проект, на, вы, рисках, вид, чтобы, о, идете, старте, как, спорта, предпринимательство, знаете, такой, свой, это, технологическое, вообще, и, вид, на, проект");

@@ -33,8 +33,6 @@ public class SecretPhraseContestService {
         if (isPhraseCorrect) {
             log.info("User with chatId : {} guess phrase!", chatId);
             contestWinnerService.addWinner(chatId);
-            contestSecret.setIsAllWordsFound(true);
-            contestSecretRepository.save(contestSecret);
         }
         return isPhraseCorrect;
     }
@@ -48,7 +46,14 @@ public class SecretPhraseContestService {
         List<SecretWord> secretWords = secretWordRepository.findAllNotGuessed();
         //Проверяем совпадает ли введённая пользователем часть фразы с любой из частей хранящихся у нас.
         //Если есть совпадение, то отмечаем у себя в базе слово как угаданное
-        return secretWords.stream().anyMatch(secretWord -> isWordCorrect(processedUserWord, secretWord));
+        boolean isWordCorrect = secretWords.stream().anyMatch(secretWord -> isWordCorrect(processedUserWord, secretWord));
+        if (isWordCorrect) {
+            boolean isAllWordsGuessed = secretWordRepository.findAllNotGuessed().isEmpty();
+            if (isAllWordsGuessed) {
+                contestSecretRepository.markAllWordsGuessed();
+            }
+        }
+        return isWordCorrect;
     }
 
     private boolean isWordCorrect(String userWords, SecretWord secretWord) {
@@ -60,11 +65,19 @@ public class SecretPhraseContestService {
         return false;
     }
 
+    public Boolean isAllWordsFound() {
+        return contestSecretRepository.findAll().get(0).getIsAllWordsFound();
+    }
+
     private String processUserPhrase(String phrase) {
         return phrase.replaceAll("-", "")
                 .replaceAll("\\.", "")
                 .replaceAll(",", "")
                 .trim()
                 .toLowerCase(Locale.ROOT);
+    }
+
+    public void activatePhrase() {
+        contestSecretRepository.markAllWordsGuessed();
     }
 }
