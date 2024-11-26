@@ -22,4 +22,5 @@ public class UserCommands {
     public static final String ALL_FEEDBACKS = "/feedbacks";
     public static final String SEE_THE_WINNER = "/seethewinner";
     public static final String ACTIVATE_PHRASE_ENTRY = "/activatephraseentry";
+    public static final String SEE_PHRASE_INPUT = "/seephraseinput";
 }

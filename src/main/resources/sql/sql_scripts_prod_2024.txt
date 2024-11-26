@@ -28,7 +28,7 @@ INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, plac
 Арбаков Вячеслав - технический гуру в «Иркутской процессинговой компании» со специализацией: разработка программного обеспечения и поддержке Центров обработки данных
 Екатерина Марютина – собственник и руководитель компании кейтеринга «ШЕФ».
 Зайцев Даниил – предприниматель, эксперт в области lean-технологий. Основатель Экосистемы ЦЕХ (онлайн платформы инжиниринга)
-Маяренков Сергей  - предприниматель, генеральный директор ООО «Стартап-студия ИРНИТУ»', 'Фармасинтез');
+Шестаков Артем – координатор ООО «Стартап-студия ИРНИТУ»', 'Фармасинтез');
 INSERT INTO forum_schedule(id, start_date_time, end_date_time, description, place) VALUES (109, '14:20', '15:00', 'Мастермайнд - «Мастерская успеха: предпринимательский рывок от идеи к результату.  Практические советы на горящие темы»
 
 Спикер:
@@ -55,7 +55,7 @@ INSERT INTO business_experts(id, name, description) VALUES(101, 'Анна и А�
 INSERT INTO business_experts(id, name, description) VALUES(102, 'Арбаков Вячеслав', 'технический гуру в «Иркутской процессинговой компании» ');
 INSERT INTO business_experts(id, name, description) VALUES(103, 'Екатерина Марютина', 'руководитель компании кейтеринга «ШЕФ».');
 INSERT INTO business_experts(id, name, description) VALUES(104, 'Зайцев Даниил', 'эксперт в области lean-технологий');
-INSERT INTO business_experts(id, name, description) VALUES(105, 'Маяренков Сергей', 'генеральный директор ООО «Стартап-студия ИРНИТУ»');
+INSERT INTO business_experts(id, name, description) VALUES(105, 'Шестаков Артем', 'координатор ООО «Стартап-студия ИРНИТУ»');
 
 INSERT INTO education_blocks(id, name) VALUES ('100', 'Лекции');
 INSERT INTO education_blocks(id, name) VALUES ('101', 'Выступление спикеров');
@@ -93,10 +93,33 @@ INSERT INTO contest_secret(id, phrase, is_all_words_found)
   VALUES ('100', 'Технологическое предпринимательство - это вообще особенный вид бизнеса. Такой, как экстремальный вид спорта. Вы знаете о рисках уже на старте и все равно вы на них идете, чтобы реализовать свой проект', false);
 
 -- Секретные слова храним в максимально упрощённом виде: без знаков припинания и в нижнем регистре. Когда пользователь будет вводить текст, его тоже будем очищать от знаков припинания и приводить к нижнему регистру
-INSERT INTO secret_words(id, word, is_guessed) VALUES ('100', 'технологическое предпринимательство', false);
-INSERT INTO secret_words(id, word, is_guessed) VALUES ('101', 'это вообще особенный вид бизнеса', false);
-INSERT INTO secret_words(id, word, is_guessed) VALUES ('102', 'такой как экстремальный вид спорта', false);
-INSERT INTO secret_words(id, word, is_guessed) VALUES ('103', 'вы знаете о рисках уже на старте и все равно вы на них идете', false);
-INSERT INTO secret_words(id, word, is_guessed) VALUES ('104', 'чтобы реализовать свой проект', false);
-
-
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('100', 'технологическое', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('101', 'предпринимательство', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('102', 'это', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('103', 'вообще', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('104', 'особенный', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('105', 'вид', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('106', 'бизнеса', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('107', 'такой', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('108', 'как', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('109', 'экстремальный', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('110', 'вид', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('111', 'спорта', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('112', 'Вы', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('113', 'знаете', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('114', 'о', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('115', 'рисках', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('116', 'уже', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('117', 'на', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('118', 'старте', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('119', 'и', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('120', 'все', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('121', 'равно', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('122', 'вы', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('123', 'на', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('124', 'них', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('125', 'идете', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('126', 'чтобы', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('127', 'реализовать', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('128', 'свой', false);
+INSERT INTO secret_words(id, word, is_guessed) VALUES ('129', 'проект', false);

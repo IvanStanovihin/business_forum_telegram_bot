@@ -4,6 +4,7 @@ import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.models.entities.ContestWinner;
+import irnitu.forum.bot.models.entities.PhraseInputLog;
 import irnitu.forum.bot.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,8 @@ public class CommandHandler {
     private final ContestWinnerService contestWinnerService;
     private final SecretPhraseContestService secretPhraseContestService;
 
+    private final PhraseInputLoggerService phraseInputLoggerService;
+
     private List<String> whiteList = Arrays.asList("slavikir", "IvanStanovihin", "rocknrollalalala", "VikaRinchinova", "elenagoncharova18");
 
     public CommandHandler(Keyboards keyboards,
@@ -41,7 +44,9 @@ public class CommandHandler {
                           BotStatesService botStatesService,
                           ForumScheduleService forumScheduleService,
                           ConsultationTimeSlotService consultationTimeSlotService,
-                          ContestWinnerService contestWinnerService, SecretPhraseContestService secretPhraseContestService
+                          ContestWinnerService contestWinnerService,
+                          SecretPhraseContestService secretPhraseContestService,
+                          PhraseInputLoggerService phraseInputLoggerService
     ) {
         this.keyboards = keyboards;
         this.userService = userService;
@@ -51,6 +56,7 @@ public class CommandHandler {
         this.consultationTimeSlotService = consultationTimeSlotService;
         this.contestWinnerService = contestWinnerService;
         this.secretPhraseContestService = secretPhraseContestService;
+        this.phraseInputLoggerService = phraseInputLoggerService;
     }
 
     public ResponseForUser handleCommand(Update update) {
@@ -99,17 +105,44 @@ public class CommandHandler {
                 }
                 log.error("ACTIVATE_PHRASE_ENTRY whitelist error!");
                 return null;
+            case SEE_PHRASE_INPUT:
+                if (whiteList.contains(user)) {
+                    return seePhraseInput(update);
+                }
+                log.error("SEE_PHRASE_INPUT whitelist error!");
             default:
                 log.error("Unexpected command entered!");
                 return null;
         }
     }
 
+    private ResponseForUser seePhraseInput(Update update) {
+        List<PhraseInputLog> logList = phraseInputLoggerService.getInputPhraseLog();
+        long chatId = update.getMessage().getChatId();
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
+
+        if (logList.isEmpty()) {
+            sendMessage.setText("Еще никто не вводил фразу");
+        } else {
+            StringBuilder result = new StringBuilder();
+            result.append("Попытки ввода: \n");
+
+            logList.forEach( log -> {
+                String message = String.format("%s - @%s\n", log.getInputPhrase(), log.getUserTgName());
+                result.append(message);
+            });
+
+            sendMessage.setText(result.toString());
+        }
+
+        return new ResponseForUser(sendMessage);
+    }
+
     /**
      * Обработка нажатия организатором кнопки "Активировать ввод фразы"
      */
     private ResponseForUser activatePhraseEntry(Update update) {
-        //Нужно дергать ручку на бэке которая активирует отгадывание фразы
         secretPhraseContestService.activatePhrase();
 
         long chatId = update.getMessage().getChatId();
@@ -132,14 +165,14 @@ public class CommandHandler {
         List<ContestWinner> winners = contestWinnerService.getWinners();
 
         if (winners.isEmpty()) {
-            sendMessage.setText("еще никто не удагал фразу");
+            sendMessage.setText("Еще никто не удагал фразу");
         } else {
             StringBuilder result = new StringBuilder();
             winners.forEach(winner -> {
                 String winnerStr = "Время ввода фразы: " + winner.getPhraseEntryTime()
-                    + " Угадавший: " + winner.getStudent().getTelegramUserName()
-                    + " зарегистрирован как: " + winner.getStudent().getRegistrationInformation()
-                    + " номер телефона: " + winner.getStudent().getPhoneNumber() + "\n";
+                        + "\nУгадавший: " + winner.getStudent().getTelegramUserName()
+                        + "\nзарегистрирован как: " + winner.getStudent().getRegistrationInformation()
+                        + "\nномер телефона: " + winner.getStudent().getPhoneNumber() + "\n";
                 result.append(winnerStr);
             });
             sendMessage.setText(result.toString());
@@ -255,8 +288,8 @@ public class CommandHandler {
                         "\n<b>4.</b> Посмотреть рассписание консультаций на которые Вы записались - %s" +
                         "\n" +
                         "\n<b>5.</b> Участвовать в конкурсе - «Угадай фразу» - %s" +
-                        "\n\n Если возникнут какие-либо вопросы по работе бота, то "
-                        + "обращайтесь к: \nhttps://t.me/IvanStanovihin  \nhttps://t.me/slavikir",
+                        "\n\nЕсли возникнут какие-либо вопросы по работе бота, то "
+                        + "обращайтесь к:\nhttps://t.me/IvanStanovihin  \nhttps://t.me/slavikir",
                 FORUM_SCHEDULE,
                 ADD_FEEDBACK,
                 ADD_CONSULTATION,
@@ -267,17 +300,7 @@ public class CommandHandler {
         StringBuilder message = new StringBuilder(mainMessage);
 
         if (whiteList.contains(user)) {
-            String extraMessage = String.format("\n\nКоманды для организаторов: \n" +
-                            "<b>1.</b> Посмотреть общее расписание консультаций - %s \n" +
-                            "<b>2.</b> Посмотреть отзывы участников - %s \n" +
-                            "<b>3.</b> Посмотреть победителя конкурса - %s \n" +
-                            "<b>4.</b> Активировать ввод фразы - %s \n",
-                    CONSULTATIONS_SCHEDULE,
-                    ALL_FEEDBACKS,
-                    SEE_THE_WINNER,
-                    ACTIVATE_PHRASE_ENTRY
-            );
-            message.append(extraMessage);
+            message.append(extraMessageForAdmins());
         }
 
         SendMessage sendMessage = new SendMessage();
@@ -289,8 +312,9 @@ public class CommandHandler {
 
     private ResponseForUser startCommand(Update update) {
         long chatId = update.getMessage().getChatId();
+        String user = update.getMessage().getFrom().getUserName();
 
-        String message = String.format("<b>Добрый день, уважаемые участники!</b>\n" +
+        String mainMessage = String.format("<b>Добрый день, уважаемые участники!</b>\n" +
                         "\n<b>Приветствуем вас в боте молодежного форума «PROпредпринимателей» С помощью этого бота вы сможете:</b>" +
                         "\n" +
                         "\n<b>1.</b> Посмотреть актуальную программу мероприятия - %s" +
@@ -309,14 +333,34 @@ public class CommandHandler {
                 USER_CONSULTATIONS,
                 CONTEST,
                 HELP
-                //TODO добавить команды для оргов
         );
+
+        StringBuilder message = new StringBuilder(mainMessage);
+
+        if (whiteList.contains(user)) {
+            message.append(extraMessageForAdmins());
+        }
 
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(String.valueOf(chatId));
-        sendMessage.setText(message);
+        sendMessage.setText(message.toString());
         sendMessage.setParseMode(ParseMode.HTML);
         return new ResponseForUser(sendMessage);
+    }
+
+    private String extraMessageForAdmins() {
+        return String.format("\n\nКоманды для организаторов: \n" +
+                        "<b>1.</b> Посмотреть общее расписание консультаций - %s \n" +
+                        "<b>2.</b> Посмотреть отзывы участников - %s \n" +
+                        "<b>3.</b> Посмотреть победителя конкурса - %s \n" +
+                        "<b>4.</b> Активировать ввод фразы - %s \n" +
+                        "<b>5.</b> Посмотреть попытки ввода фразы - %s \n",
+                CONSULTATIONS_SCHEDULE,
+                ALL_FEEDBACKS,
+                SEE_THE_WINNER,
+                ACTIVATE_PHRASE_ENTRY,
+                SEE_PHRASE_INPUT
+        );
     }
 
     private ResponseForUser registrationCommand(Update update) {

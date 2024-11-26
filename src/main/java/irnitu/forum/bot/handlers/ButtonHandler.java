@@ -3,14 +3,18 @@ package irnitu.forum.bot.handlers;
 import irnitu.forum.bot.buttons.Keyboards;
 import irnitu.forum.bot.constants.UserCommands;
 import irnitu.forum.bot.models.common.ResponseForUser;
+import irnitu.forum.bot.models.entities.ContestWinner;
 import irnitu.forum.bot.services.BotStatesService;
 import irnitu.forum.bot.services.ConsultationTimeSlotService;
+import irnitu.forum.bot.services.ContestWinnerService;
 import irnitu.forum.bot.services.SecretPhraseContestService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.List;
 
 /**
  * Главный класс для обработки нажатий на кнопки
@@ -24,6 +28,8 @@ public class ButtonHandler {
     private final ConsultationTimeSlotService consultationTimeSlotService;
     private final BotStatesService botStatesService;
     private final SecretPhraseContestService secretPhraseContestService;
+
+    private final ContestWinnerService contestWinnerService;
 
 
     public ResponseForUser handleButton(Update update){
@@ -55,9 +61,15 @@ public class ButtonHandler {
         String userTelegramName = update.getCallbackQuery().getFrom().getUserName();
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setText("Введите слово");
+        boolean allWordsIsFound = secretPhraseContestService.isAllWordsFound();
+        if (!allWordsIsFound) {
+            sendMessage.setText("Введите слово");
+            botStatesService.setWordState(userTelegramName);
+        } else {
+            sendMessage.setText("Все слова введены, теперь вам нужно угадать фразу!");
+        }
         sendMessage.setChatId(String.valueOf(chatId));
-        botStatesService.setWordState(userTelegramName);
+
         return new ResponseForUser(sendMessage);
     }
 
@@ -68,16 +80,27 @@ public class ButtonHandler {
         String userTelegramName = update.getCallbackQuery().getFrom().getUserName();
         long chatId = update.getCallbackQuery().getMessage().getChatId();
         SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(String.valueOf(chatId));
         boolean allWordsIsFound = secretPhraseContestService.isAllWordsFound();
 
-        if (allWordsIsFound) {
-            sendMessage.setText("Вам нужно угадать фразу состоящую из следующих слов:\n\nреализовать, бизнеса, них, равно, уже, все, экстремальный, особенный, проект, на, вы, рисках, вид, чтобы, о, идете, старте, как, спорта, предпринимательство, знаете, такой, свой, это, технологическое, вообще, и, вид, на, проект");
-            botStatesService.setPhraseState(userTelegramName);
-        } else {
-            sendMessage.setText("Вы не можете отгадывать фразу потому что ввели не все слова");
-        }
-        sendMessage.setChatId(String.valueOf(chatId));
+        List<ContestWinner> winners = contestWinnerService.getWinners();
 
+        if (winners.isEmpty()) {
+            if (allWordsIsFound) {
+                sendMessage.setText("Вам нужно угадать фразу состоящую из следующих слов:\n(подсказка - вы можете не заморачиваться на счет знаков припянания, главное соблюсти правильную последовательность слов)\n\nреализовать, бизнеса, них, равно, уже, все, экстремальный, особенный, проект, на, вы, рисках, вид, чтобы, о, идете, старте, как, спорта, предпринимательство, знаете, такой, свой, это, технологическое, вообще, и, вид, на, проект");
+                botStatesService.setPhraseState(userTelegramName);
+            } else {
+                sendMessage.setText("Вы не можете отгадывать фразу потому что ввели не все слова");
+            }
+
+        } else {
+            StringBuilder result = new StringBuilder();
+            result.append("Фразу уже отгадали, конкурс завершен. Победитель - @");
+            winners.forEach(winner -> result.append(winner.getStudent().getTelegramUserName()));
+            result.append("\n\n Фраза была - \"Технологическое предпринимательство - это вообще особенный вид бизнеса. Такой, как экстремальный вид спорта. Вы знаете о рисках уже на старте и все равно вы на них идете, чтобы реализовать свой проект\"");
+            sendMessage.setText(result.toString());
+
+        }
         return new ResponseForUser(sendMessage);
     }
 

@@ -2,14 +2,15 @@ package irnitu.forum.bot.handlers;
 
 import irnitu.forum.bot.models.common.ResponseForUser;
 import irnitu.forum.bot.models.entities.BotState;
-import irnitu.forum.bot.services.BotStatesService;
-import irnitu.forum.bot.services.FeedbackService;
-import irnitu.forum.bot.services.SecretPhraseContestService;
-import irnitu.forum.bot.services.UserService;
+import irnitu.forum.bot.models.entities.ContestWinner;
+import irnitu.forum.bot.models.entities.PhraseInputLog;
+import irnitu.forum.bot.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.List;
 
 /**
  * Класс для обработки текста, введённого пользователем
@@ -24,22 +25,30 @@ public class TextHandler {
 
     private final SecretPhraseContestService secretPhraseContestService;
 
+    private final ContestWinnerService contestWinnerService;
+
+    private final PhraseInputLoggerService phraseInputLoggerService;
+
     public TextHandler(BotStatesService botStatesService,
                        UserService userService,
                        FeedbackService feedbackService,
-                       SecretPhraseContestService secretPhraseContestService
+                       SecretPhraseContestService secretPhraseContestService,
+                       ContestWinnerService contestWinnerService,
+                       PhraseInputLoggerService phraseInputLoggerService
     ) {
         this.botStatesService = botStatesService;
         this.userService = userService;
         this.feedbackService = feedbackService;
         this.secretPhraseContestService = secretPhraseContestService;
+        this.contestWinnerService = contestWinnerService;
+        this.phraseInputLoggerService = phraseInputLoggerService;
     }
 
-    public ResponseForUser handleText(Update update){
+    public ResponseForUser handleText(Update update) {
         log.info("HandleText");
         BotState botState = botStatesService.getState(update.getMessage().getFrom().getUserName());
         botStatesService.resetState(update.getMessage().getFrom().getUserName());
-        switch (botState.getState()){
+        switch (botState.getState()) {
             case WAIT_REGISTRATION:
                 return registrationText(update);
             case WAIT_FEEDBACK:
@@ -61,21 +70,34 @@ public class TextHandler {
     private ResponseForUser phraseText(Update update) {
         SendMessage sendMessage = new SendMessage();
         Long chatId = update.getMessage().getChatId();
+        String tgUserName = update.getMessage().getFrom().getUserName();
         sendMessage.setChatId(String.valueOf(chatId));
         String inputPhrase = update.getMessage().getText();
         log.info("phraseText - {}", inputPhrase);
 
-        boolean phraseIsCorrect = secretPhraseContestService.checkPhrase(update.getMessage().getFrom().getUserName(), inputPhrase);
+        List<ContestWinner> winners = contestWinnerService.getWinners();
 
-        // TODO дергать ручку с проверкой введеной фразы (должна возвращать true/fasle),
-        // также нужно учесть что если фразу уже отгадали до этого нужно вывести сообщение об этом
-        // также нужно учесть что пользователь может несколько раз подряд фразу (несколько сообщений подряд)
-        // TODO формулировка
-        if (phraseIsCorrect) {
-            sendMessage.setText("Вы ввели корректную фразу");
-            //TODO дергать ручку с установкой ника победителя
+        if (winners.isEmpty()) {
+            boolean phraseIsCorrect = secretPhraseContestService.checkPhrase(tgUserName, inputPhrase);
+            if (phraseIsCorrect) {
+                sendMessage.setText("Вы угадали фразу! ПОЗДРАВЛЯЕМ!\nДля получение приза обратитесь к @elenagoncharova18");
+            } else {
+                String userName = update.getMessage().getFrom().getUserName();
+                PhraseInputLog phraseInputLog = new PhraseInputLog()
+                        .setInputPhrase(inputPhrase)
+                        .setUserTgName(userName);
+
+                phraseInputLoggerService.addInputPhraseLog(phraseInputLog);
+
+                sendMessage.setText("Вы не угадали фразу :(\nПопробуйте еще раз!");
+            }
         } else {
-            sendMessage.setText("Вы ввели не корректную фразу, попробуйте еще раз");
+            StringBuilder result = new StringBuilder();
+            result.append("Фразу уже угадали @");
+            winners.forEach(winner -> result.append(winner.getStudent().getTelegramUserName()));
+
+            sendMessage.setText(result.toString());
+
         }
         botStatesService.setPhraseState(update.getMessage().getFrom().getUserName());
         return new ResponseForUser(sendMessage);
@@ -92,12 +114,9 @@ public class TextHandler {
         String inputPhrase = update.getMessage().getText();
         boolean wordIsCorrect = secretPhraseContestService.checkWord(inputPhrase);
         if (wordIsCorrect) {
-            //TODO дергать ручку с проверкой введеного слова (должна возвращать true/fasle)
-            //также нужно учесть что пользователь может несколько раз подряд фразу (несколько сообщений подряд)
-            // TODO формулировка
-            sendMessage.setText("Вы ввели слово которое есть во фразе");
+            sendMessage.setText("Вы ввели слово которое есть в фразе!");
         } else {
-            sendMessage.setText("Этого слова нет во фразе");
+            sendMessage.setText("Этого слова нет в фразе, попробуйте еще раз!");
         }
         botStatesService.setWordState(update.getMessage().getFrom().getUserName());
         return new ResponseForUser(sendMessage);
@@ -106,12 +125,12 @@ public class TextHandler {
     /**
      * Метод для обработки текста, который пользователь ввёл для регистрации в боте
      */
-    private ResponseForUser registrationText(Update update){
+    private ResponseForUser registrationText(Update update) {
         SendMessage sendMessage = new SendMessage();
         Long chatId = update.getMessage().getChatId();
         sendMessage.setChatId(String.valueOf(chatId));
         boolean registerSuccess = userService.register(update);
-        if (!registerSuccess){
+        if (!registerSuccess) {
             sendMessage.setText("Ошибка при регистрации! Не получилось распознать ваше @Имя пользователя");
         }
         sendMessage.setText("Вы успешно зарегистрированы! Можете пользоваться ботом");
@@ -121,7 +140,7 @@ public class TextHandler {
     /**
      * Обработка состояния бота, когда он ожидает от пользователя ввода отзыва.
      */
-    private ResponseForUser feedbackText(Update update, BotState botState){
+    private ResponseForUser feedbackText(Update update, BotState botState) {
         log.info("HandleText handleFeedbackText");
         String userTelegramName = update.getMessage().getFrom().getUserName();
         String feedback = update.getMessage().getText();

@@ -4,11 +4,11 @@ import irnitu.forum.bot.models.entities.ContestSecret;
 import irnitu.forum.bot.models.entities.SecretWord;
 import irnitu.forum.bot.repositories.ContestSecretRepository;
 import irnitu.forum.bot.repositories.SecretWordRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -29,7 +29,7 @@ public class SecretPhraseContestService {
     public boolean checkPhrase(String telegramUserName, String userPhrase) {
         String processedInputPhrase = processUserPhrase(userPhrase);
         ContestSecret contestSecret = contestSecretRepository.findAll().get(0);
-        boolean isPhraseCorrect = contestSecret.getPhrase().equals(processedInputPhrase);
+        boolean isPhraseCorrect = processUserPhrase(contestSecret.getPhrase()).equals(processedInputPhrase);
         if (isPhraseCorrect) {
             log.info("User with chatId : {} guess phrase!", telegramUserName);
             contestWinnerService.addWinner(telegramUserName);
@@ -73,6 +73,7 @@ public class SecretPhraseContestService {
         return phrase.replaceAll("-", "")
                 .replaceAll("\\.", "")
                 .replaceAll(",", "")
+                .replaceAll(" ", "")
                 .trim()
                 .toLowerCase(Locale.ROOT);
     }
