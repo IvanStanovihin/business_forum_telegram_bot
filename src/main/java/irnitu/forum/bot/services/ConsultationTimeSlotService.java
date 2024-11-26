@@ -97,7 +97,7 @@ public class ConsultationTimeSlotService {
      * Формирование текста в котором содержится информация о расписании всех консультаций с экспертами
      */
     public String getAllExpertsTimeSlots(){
-        StringBuilder timeSlotsInfo = new StringBuilder("РАССПИСАНИЕ ВСЕХ КОНСУЛЬТАЦИЙ:\n");
+        StringBuilder timeSlotsInfo = new StringBuilder("РАСПИСАНИЕ ВСЕХ КОНСУЛЬТАЦИЙ:\n");
         List<ConsultationTimeSlot> allTimeSlots = consultationTimeSlotRepository.findAllGroupByExpert();
         for(ConsultationTimeSlot timeSlot : allTimeSlots){
             String expertInfo = String.format("ЭКСПЕРТ: %s", timeSlot.getExpert().getName());
