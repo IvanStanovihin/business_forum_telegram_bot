@@ -47,6 +47,7 @@ public class UserService {
         String registrationInfo = update.getMessage().getText();
         User newUser = new User()
                 .setTelegramUserName(update.getMessage().getFrom().getUserName())
+                .setChatId(update.getMessage().getChatId().toString())
                 .setTelegramFirstName(update.getMessage().getFrom().getFirstName())
                 .setTelegramLastName(update.getMessage().getFrom().getLastName())
                 .setRegistrationInformation(registrationInfo);
