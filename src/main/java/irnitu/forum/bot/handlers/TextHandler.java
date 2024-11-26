@@ -65,7 +65,7 @@ public class TextHandler {
         String inputPhrase = update.getMessage().getText();
         log.info("phraseText - {}", inputPhrase);
 
-        boolean phraseIsCorrect = secretPhraseContestService.checkPhrase(chatId, inputPhrase);
+        boolean phraseIsCorrect = secretPhraseContestService.checkPhrase(update.getMessage().getFrom().getUserName(), inputPhrase);
 
         // TODO дергать ручку с проверкой введеной фразы (должна возвращать true/fasle),
         // также нужно учесть что если фразу уже отгадали до этого нужно вывести сообщение об этом

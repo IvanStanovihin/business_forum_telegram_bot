@@ -29,8 +29,8 @@ public class ContestWinnerService {
      * @param userTelegramName
      * @param time
      */
-    public void addWinner(Long chatId) {
-        User user = userRepository.findByChatId(chatId.toString());
+    public void addWinner(String telegramUserName) {
+        User user = userRepository.findByTelegramUserName(telegramUserName);
         ContestWinner winner = new ContestWinner()
             .setStudent(user)
             .setPhraseEntryTime(LocalDateTime.now())

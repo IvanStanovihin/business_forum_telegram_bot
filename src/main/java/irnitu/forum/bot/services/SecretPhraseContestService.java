@@ -26,13 +26,13 @@ public class SecretPhraseContestService {
     /**
      * Метод для проверки введённой фразы
      */
-    public boolean checkPhrase(Long chatId, String userPhrase) {
+    public boolean checkPhrase(String telegramUserName, String userPhrase) {
         String processedInputPhrase = processUserPhrase(userPhrase);
         ContestSecret contestSecret = contestSecretRepository.findAll().get(0);
         boolean isPhraseCorrect = contestSecret.getPhrase().equals(processedInputPhrase);
         if (isPhraseCorrect) {
-            log.info("User with chatId : {} guess phrase!", chatId);
-            contestWinnerService.addWinner(chatId);
+            log.info("User with chatId : {} guess phrase!", telegramUserName);
+            contestWinnerService.addWinner(telegramUserName);
         }
         return isPhraseCorrect;
     }
