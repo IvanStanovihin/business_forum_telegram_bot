@@ -13,7 +13,7 @@ public interface ContestSecretRepository extends JpaRepository<ContestSecret, Lo
 
     ContestSecret findContestById(Long contestId);
 
-    @Query(value = "update contest_secret c set c.is_all_words_found = true where true",
+    @Query(value = "update contest_secret set is_all_words_found = true where true",
            nativeQuery = true)
     void markAllWordsGuessed();
 }
