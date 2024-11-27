@@ -113,10 +113,16 @@ public class TextHandler {
 
         String inputPhrase = update.getMessage().getText();
         boolean wordIsCorrect = secretPhraseContestService.checkWord(inputPhrase);
-        if (wordIsCorrect) {
-            sendMessage.setText("Вы ввели слово которое есть в фразе!");
+        boolean allWordsIsFound = secretPhraseContestService.isAllWordsFound();
+
+        if (allWordsIsFound) {
+            sendMessage.setText("Вы ввели ПОСЛЕДНЕЕ слово которое есть в фразе!");
         } else {
-            sendMessage.setText("Этого слова нет в фразе, попробуйте еще раз!");
+            if (wordIsCorrect) {
+                sendMessage.setText("Вы ввели слово которое есть в фразе!");
+            } else {
+                sendMessage.setText("Этого слова нет в фразе, попробуйте еще раз!");
+            }
         }
         botStatesService.setWordState(update.getMessage().getFrom().getUserName());
         return new ResponseForUser(sendMessage);

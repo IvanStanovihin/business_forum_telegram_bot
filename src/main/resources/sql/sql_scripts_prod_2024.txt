@@ -101,9 +101,7 @@ INSERT INTO secret_words(id, word, is_guessed) VALUES ('106', 'бизнеса', 
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('107', 'такой', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('108', 'как', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('109', 'экстремальный', false);
-INSERT INTO secret_words(id, word, is_guessed) VALUES ('110', 'вид', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('111', 'спорта', false);
-INSERT INTO secret_words(id, word, is_guessed) VALUES ('112', 'Вы', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('113', 'знаете', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('114', 'о', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('115', 'рисках', false);
@@ -114,7 +112,6 @@ INSERT INTO secret_words(id, word, is_guessed) VALUES ('119', 'и', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('120', 'все', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('121', 'равно', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('122', 'вы', false);
-INSERT INTO secret_words(id, word, is_guessed) VALUES ('123', 'на', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('124', 'них', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('125', 'идете', false);
 INSERT INTO secret_words(id, word, is_guessed) VALUES ('126', 'чтобы', false);
