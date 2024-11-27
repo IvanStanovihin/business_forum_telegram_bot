@@ -1,1 +1,1 @@
-TRUNCATE forum_schedule, business_experts, education_blocks, users, consultation_time_slots, contest_secret, secret_words CASCADE;
+TRUNCATE forum_schedule, business_experts, education_blocks, users, consultation_time_slots, contest_secret, secret_words, phrase_input_log CASCADE;
